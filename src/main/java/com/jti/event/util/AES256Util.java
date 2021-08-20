@@ -17,7 +17,7 @@ import java.security.NoSuchAlgorithmException;
 @Component
 public class AES256Util {
     
-	private final static String key = "michelin_bag_promotion";
+	private final static String key = "jti_20210820_promotion";
 	
 	private String iv;
     private Key keySpec;

@@ -2,6 +2,7 @@ package com.jti.event.front.control;
 
 import com.jti.event.common.model.BaseResult;
 import com.jti.event.exception.ServiceException;
+import com.jti.event.util.AES256Util;
 import com.jti.event.util.CouponCreate;
 import com.jti.event.util.WebUtil;
 import org.apache.commons.logging.Log;
