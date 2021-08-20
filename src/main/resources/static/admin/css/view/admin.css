@@ -1,0 +1,24 @@
+#divAccountDetail {
+	position: fixed;
+	top: 10%;
+	left: 50%;
+	z-index: 1050;
+	width: 940px;
+	margin-left: -470px;
+	background-color: #ffffff;
+}
+
+#divAccountDetail>.modal-body {
+	position: relative;
+	overflow-y: auto;
+	max-height: 500px;
+	padding: 15px;
+}
+
+#adminId{
+	ime-mode:disabled;
+}
+
+#UpdateBtn {
+	display:none;
+}

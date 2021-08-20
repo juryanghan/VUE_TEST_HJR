@@ -1,0 +1,65 @@
+.Detail button {
+	padding: 2px 6px;
+	font-size: 12px;
+	margin-right: 10px;
+}
+
+.productImg img {
+	width: 140px;
+	float: left;
+	border: 1px solid #ddd;
+	margin-right: 10px;
+}
+
+#divOrderDetail {
+	position: fixed;
+	top: 10%;
+	left: 50%;
+	z-index: 1050;
+	width: 940px;
+	margin-left: -470px;
+	background-color: #ffffff;
+}
+
+#divOrderDetail>.modal-body {
+	position: relative;
+	overflow-y: auto;
+	max-height: 500px;
+	padding: 15px;
+}
+
+.AddrRow {
+	display: none;
+}
+
+#search_addr {
+	display: block;
+	max-height: 200px;
+	overflow-y: scroll;
+}
+
+.crim-select .crim-select-result {
+	background: #fbfbfb;
+	color: #999999;
+	border: 1px #ededed solid;
+	letter-spacing: -0.7px;
+	border-top: 0;
+	display: none;
+}
+
+.crim-select.active .crim-select-result {
+	display: block;
+}
+
+.crim-select .result-item {
+	padding: 7px 21px;
+	cursor: pointer;
+}
+
+.crim-select .result-item:hover {
+	background-color: #ececec;
+}
+
+#divOrderDetail .form-control  {
+	width:100%;
+}

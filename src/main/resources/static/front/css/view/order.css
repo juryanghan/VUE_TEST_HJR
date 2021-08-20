@@ -1,0 +1,35 @@
+﻿#AddrRow {
+	display: none;
+}
+
+#search_addr {
+	display: block;
+	max-height: 200px;
+	overflow-y: scroll;
+}
+
+.crim-select .crim-select-result {
+	background: #fbfbfb;
+	color: #999999;
+	border: 1px #ededed solid;
+	letter-spacing: -0.7px;
+	border-top: 0;
+	display: none;
+}
+
+.crim-select.active .crim-select-result {
+	display: block;
+	max-height: 300px;
+	overflow-y: auto;
+	margin-bottom:15px;
+}
+
+.crim-select .result-item {
+	font-size:18px;
+	padding: 7px 21px;
+	cursor: pointer;
+}
+
+.crim-select .result-item:hover {
+	background-color: #ececec;
+}

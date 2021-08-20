@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="front/layout/default">
+<body>
+	<th:block layout:fragment="css">
+	</th:block>
+	<!--content-->
+	<div class="content login" layout:fragment="content">
+		<div class="container">
+			<div class="box-login">
+				<div class="box-input">
+					<label for="couponNo">쿠폰 번호 입력</label> <input type="text" id="couponSerial" name="couponSerial" maxlength="50" data-required="쿠폰번호" placeholder="쿠폰번호를 입력해 주세요." th:value="${couponNo}">
+					<a class="btn-login" id="SaveBtn">확인</a>
+				</div>
+				<p>고객센터 : 1899-9120 / 9:00 AM - 6:00 PM(평일) / 주말 및 공휴일은 휴무</p>
+			</div>
+			<div class="copyright">CopyRight&copy; 2019 Michelin.Allright reserved</div>
+		</div>
+	</div>
+	<!--// content-->
+	<th:block layout:fragment="script">
+		<script th:src="${#tck.getVersion('/front/js/view/main.js')}"></script>
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			$(document).ready(function() {
+				MainJS.init();
+			});
+			/*]]>*/
+		</script>
+	</th:block>
+</body>
+</html>
+
+

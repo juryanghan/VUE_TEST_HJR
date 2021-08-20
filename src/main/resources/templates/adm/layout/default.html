@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>미쉐린코리아 : management system</title>
+
+<link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+<!-- Custom fonts for this template-->
+<link href="/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link th:href="${#tck.getVersion('/admin/css/sb-admin-2.css')}" rel="stylesheet">
+<link th:href="${#tck.getVersion('/admin/css/styles.css')}" rel="stylesheet">
+<link rel="stylesheet" th:href="${#tck.getVersion('/admin/css/layer_pop.css')}">
+
+<!-- 컨텐츠페이지의 CSS 영역이 들어감 -->
+<th:block layout:fragment="css"></th:block>
+</head>
+<body id="page-top">
+	<div id="wrapper">
+		<!-- Sidebar -->
+		<ul th:replace="adm/fragments/sidebar :: SidebarFragment"></ul>
+		<!-- End of Sidebar -->
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+			<!-- contents-->
+			<div layout:fragment="content"></div>
+			<!-- //contents -->
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white">
+				<div class="container my-auto">
+					<div class="copyright text-center my-auto">
+						<span>Copyright &copy; Your Website 2019</span>
+					</div>
+				</div>
+			</footer>
+			<!-- End of Footer -->
+		</div>
+	</div>
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> 
+		<i class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- Logout Modal-->
+	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+				<div class="modal-footer">
+					<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+					<a class="btn btn-primary" href="login.html">Logout</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- /#wrapper -->
+	
+	<div layout:fragment="modal"></div>
+
+	<!-- 컨텐츠페이지의 스크립트 영역이 들어감 -->
+	<script src='/admin/js/lib/jquery-1.12.0.min.js'></script>
+	<script src='/admin/js/lib/jquery.js'></script>
+	<script src='/admin/js/lib/jquery-ui.js'></script>
+	<script src='/admin/js/lib/jquery.validate-1.11.1.min.js'></script>
+	<script th:src="${#tck.getVersion('/admin/js/tck/tckJS.js')}"></script>
+	<script src='/admin/js/tck/Stringprototype.js'></script>
+	
+	<!-- Bootstrap core JavaScript-->
+	<script src="/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="/admin/js/sb-admin-2.min.js"></script>
+	<th:block layout:fragment="script"></th:block>
+</body>
+</html>

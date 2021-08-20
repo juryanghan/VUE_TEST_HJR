@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)https://ajtotal.co.kr/contact/email.html -->
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="/front/img/favicon.png">
+<title>미쉐린코리아</title>
+
+
+<!-- font -->
+<link th:href="${#tck.getVersion('/front/css/font-notosans.css')}" rel="stylesheet">
+
+<!-- Bootstrap core CSS -->
+<link th:href="${#tck.getVersion('/front/css/bootstrap.css')}" rel="stylesheet">
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<link href="https://getbootstrap.com/docs/3.3/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+<!-- Custom styles -->
+<link th:href="${#tck.getVersion('/front/css/style.css')}" rel="stylesheet">
+
+<link th:href="${#tck.getVersion('/front/css/layer_pop.css')}" rel="stylesheet">
+
+
+<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+<!--[if lt IE 9]><script src="https://getbootstrap.com/docs/3.3/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+<script src="https://getbootstrap.com/docs/3.3/assets/js/ie-emulation-modes-warning.js"></script>
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+<!-- 컨텐츠페이지의 CSS 영역이 들어감 -->
+<th:block layout:fragment="css"></th:block>
+
+</head>
+<body>
+	<!--header/ menu-->
+	<header th:replace="front/fragments/header :: headerFragment"></header>
+	<!--//header/ menu-->
+	<!--content-->
+	<div layout:fragment="content"></div>
+	<!--// content-->
+
+	<!-- 공통 layer popup -->
+	<div class="dimmed"></div>
+	<div class="layer-pop pop02">
+		<div class="box-pop">
+			<p class="txt-pop">
+				<span id="msgPop"></span>
+			</p>
+		</div>
+		<button class="btn-close" onclick="javascript:closePop();">확인</button>
+	</div>
+
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script type="text/javascript" th:src="${#tck.getVersion('/front/js/jquery.min.js')}"></script>
+	<script type="text/javascript" th:src="${#tck.getVersion('/front/js/common-nobrand.js')}"></script>
+
+	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	<script src="https://getbootstrap.com/docs/3.3/assets/js/ie10-viewport-bug-workaround.js"></script>
+
+	<script type="text/javascript" th:src="${#tck.getVersion('/front/js/pop.js')}"></script>
+	<script type="text/javascript" th:src="${#tck.getVersion('/front/js/tck/Stringprototype.js')}"></script>
+	<script type="text/javascript" th:src="${#tck.getVersion('/front/js/tck/tckJS.js')}"></script>
+	<script type="text/javascript" th:src="${#tck.getVersion('/front/js/menu.js')}"></script>
+	
+
+	<!-- 컨텐츠페이지의 스크립트 영역이 들어감 -->
+	<th:block layout:fragment="script"></th:block>
+
+</body>
+</html>

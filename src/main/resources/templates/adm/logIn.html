@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>미쉐린코리아 : management system</title>
+    
+    <link rel="stylesheet" href="/admin/css/layer_pop.css">
+
+    <!-- Bootstrap Core CSS -->
+    <link th:href="${#tck.getVersion('/admin/login/css/bootstrap.css')}" rel="stylesheet">
+    
+	<!-- Custom CSS -->
+    <link href="/admin/login/css/stylesheet.css" rel="stylesheet">
+    <link th:href="${#tck.getVersion('/admin/login/css/sb-admin-2.css')}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/admin/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+	<div id="wrapper">
+	<!-- header -->
+	<header class="pb0">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/adm"><h1>미쉐린코리아</h1></a>
+			</div>
+		</nav>
+	</header>
+	<!--// header -->
+    <div class="container loginbox">
+		<div class="login-panel panel panel-default">
+			<div class="panel-body">
+				<div class="logintitle">
+					<div class="logobox">
+						<h1>미쉐린코리아</h1>
+					</div>
+					<div class="logotxt">
+						<p class="fc-gr">Management System LOGIN</p>
+						<p>홈페이지 관리자 로그인</p>
+					</div>
+				</div>
+				<form role="form" method="post" id="frm">
+					<fieldset>
+						<div class="box-right">
+							<table class="tbl-logininfo">
+								<tbody>
+									<tr>
+										<th>USER ID</th>
+										<td>
+											<input type="text" id="adminId" name="adminId" class="form-control"  tabindex="1" maxlength="25" autofocus>
+										</td>
+										<td rowspan="2">
+											<button id="loginBtn" type="button"  class="btn btn-primary btn-block">LOGIN</button> 
+										</td>
+									</tr>
+									<tr> 
+										<th>PASSWORD</th>
+										<td>
+											<input type="password" id="adminPw" name="adminPw" class="form-control" tabindex="2" maxlength="50">
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="checkbox">
+								<label>
+									<input name="remember" id="remember" type="checkbox" />아이디 저장
+								</label>
+							</div>
+						</div>	
+					</fieldset>
+				</form>
+				
+			</div>
+		</div>
+    </div>
+	</div>
+    
+    
+    <!-- 컨텐츠페이지의 스크립트 영역이 들어감 -->
+	<script src="/admin/vendor/jquery/jquery.min.js"></script>
+    <script src='/admin/js/lib/jquery.validate-1.11.1.min.js'></script>
+	<script src='/admin/js/tck/tckJS.js'></script>
+	<script src='/admin/js/tck/Stringprototype.js'></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/admin/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+
+	$(function() {
+		TckJS.Util.AlertMode = "layer";
+	});
+
+	var errorNo = "[[ ${errorNo} ]]";
+
+	function init() {
+
+		TckJS.Util.AlertMode = "layer";
+
+		if (errorNo == "01")
+			TckJS.Util.Alert("아이디를 확인해 주세요");
+		else if (errorNo == "02")
+			TckJS.Util.Alert("비밀번호를 확인해 주세요");
+		else if (errorNo == "03")
+			TckJS.Util.Alert("잠금 처리된 관리자 입니다.");
+		else if (errorNo == "04")
+			TckJS.Util.Alert("접근 권한이 없습니다.");
+		
+		//쿠키 셋팅
+		var adminId = getCookie("adminId");
+		$("#adminId").val(adminId);
+
+		if (adminId != "") {
+			$("#remember").click();
+		}
+	}
+
+	$(function() {
+
+		$("#adminId").focus();
+
+		$("#frm").validate({
+			rules : {
+				adminId : {
+					required : true,
+					minlength : 1,
+					maxlength : 25
+				},
+				adminPw : {
+					required : true,
+					minlength : 1,
+					maxlength : 50
+				}
+			},
+			messages : {
+				adminId : {
+					required : "ID를 입력해 주세요.",
+					minlength : "{0}글자 이상으로 입력하세요.",
+					maxlength : "{0}글자 이하로 입력하세요."
+				},
+				adminPw : {
+					required : "비밀번호를 입력해 주세요.",
+					minlength : "{0}글자 이상으로 입력하세요.",
+					maxlength : "{0}글자 이하로 입력하세요."
+				}
+			},
+			invalidHandler : function(form, validator) {
+				var errors = validator.numberOfInvalids();
+				if (errors) {
+					CURRENT_VALID_OBJID = validator.errorList[0].element;
+				}
+
+			}
+		});
+
+		$("#loginBtn").click(function() {
+			login();
+			return false;
+		});
+
+		$("#adminPw").keyup(function(e) {
+			if (e.keyCode == 13)
+				login();
+		});
+
+	});
+
+	function login() {
+		
+		if ($("#remember").is(":checked")) {
+			setCookie("adminId", $("#adminId").val(), 30);
+		} else {
+			deleteCookie("adminId");
+		}
+		
+		$("#frm").attr("action", "/adm/signIn");
+		$("#frm").submit();
+	}
+	
+	function setCookie(name, value, days) {
+		var d = new Date;
+		d.setTime(d.getTime() + 24*60*60*1000*days);
+		document.cookie = name + "=" + value + ";path=/;expires=" + d.toGMTString();
+	}			
+
+	function getCookie(name) {
+    	var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    	return v ? v[2] : null;
+	}
+	function deleteCookie(name) { setCookie(name, '', -1); }
+
+	$(document).ready(function() {
+		init();
+		$("#adminId").focus();
+	});
+	/*]]>*/
+	</script>
+</body>
+
+</html>

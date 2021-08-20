@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div id="divAccountDetail" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" th:fragment="adminAccountDetail">
+	<div class="modal-header">
+		<h3>
+			<span id="customerName"></span>계정 등록/수정
+		</h3>
+		<a class="close" data-dismiss="modal" aria-hidden="true">×</a>
+	</div>
+	<div class="modal-body">
+		<form id="frm" name="frm">
+			<input type="hidden" id="overlap" name="overlap" value="0" /> <input type="hidden" id="adminNo" name="adminNo" value="0" />
+			<table class="table table-detail" style="margin-bottom: 0px;">
+				<colgroup>
+					<col width="140" />
+					<col />
+					<col width="140" />
+					<col />
+				</colgroup>
+				<tbody>
+					<tr>
+						<th class="center">부서</th>
+						<td class="form-inline">
+							<select id="adminGroup" name="adminGroup" class="form-control" data-required="부서">
+								<option value="">선택</option>
+								<option value="100">Michelin</option>
+								<option value="110">TCK-센터</option>
+								<option value="120">TCK-개발</option>
+							</select>
+						</td>
+						<th class="center">담당자</th>
+						<td class="form-inline">
+							<input type="text" class="form-control" id="adminName" name="adminName" maxlength="9" placeholder="담당자를 입력하세요." data-required="담당자"/>
+							
+						</td>
+					</tr>
+					<tr>
+						<th class="center">아이디</th>
+						<td class="form-inline">
+							<input type="text" class="form-control" id="adminId" name="adminId" maxlength="15" placeholder="아이디를 입력하세요." data-required="아이디" />
+							<button type="button" class="btn btn-info" onclick="AdminJS.Overlap()" style="padding: 4px 6px;font-size: 11px;">중복검사</button>
+						</td>
+						<th class="center">비밀번호</th>
+						<td class="form-inline">
+							<input type="password" class="form-control" id="adminPw" name="adminPw" maxlength="16" placeholder="비밀번호를 입력하세요." data-required="비밀번호" />
+						</td>
+					</tr>
+					<tr>
+						<th class="center">잠금설정</th>
+						<td class="form-inline" colspan="3">
+							<label class="radio" for="adminState_0"> <input type="radio" id="adminState_0" name="adminState" value="1" style="vertical-align: text-bottom;" checked /> 해제
+							</label> <label class="radio" for="adminState_1"> <input type="radio" id="adminState_1" name="adminState" value="0" style="vertical-align: text-bottom;" /> 잠금
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th class="center">메뉴관리</th>
+						<td class="form-inline" colspan="3">
+							<label class="checkbox"><input type="checkbox" id="adminMenu0" name="adminMenus" value="Coupon" style="vertical-align: text-bottom;" />쿠폰관리</label><input type="checkbox" id="adminMenu1" name="adminMenus" value="Product" style="vertical-align: text-bottom;" />상품관리</label> <label class="checkbox"><input type="checkbox" id="adminMenu2" name="adminMenus" value="Order" style="vertical-align: text-bottom;" />주문관리</label> <label class="checkbox"><input type="checkbox" id="adminMenu3" name="adminMenus" value="Delivy" style="vertical-align: text-bottom;" />배송관리</label> <label class="checkbox"><input type="checkbox" id="adminMenu4" name="adminMenus" value="Admin" style="vertical-align: text-bottom;" />계정관리</label>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-success" id="InsertBtn">등록</button>
+		<button type="button" class="btn btn-success" id="UpdateBtn">수정</button>
+		<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">취소</button>
+	</div>
+</div>
+</html>
+
+
