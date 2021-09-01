@@ -27,6 +27,7 @@
     	<!-- ADMIN -->
 		<mapper resource="mybatis/sql/admin/AdminMapper.xml"/>
 		<mapper resource="mybatis/sql/admin/AuthMapper.xml"/>
+        <mapper resource="mybatis/sql/admin/EventBoardMapper.xml"/>
 		
 		<!-- FRONT -->
 

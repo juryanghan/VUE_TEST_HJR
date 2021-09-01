@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="adm/layout/default">
+<body>
+
+<th:block layout:fragment="css">
+    <link href='/admin/css/bootstrap-multiselect.css' rel='stylesheet' type='text/css' />
+    <link href='/admin/css/bootstrap-customized.css' rel='stylesheet' type='text/css' />
+    <link href='/admin/css/jquery-ui.css' rel='stylesheet' type='text/css' />
+    <link href='/admin/css/datepicker.css' rel='stylesheet' type='text/css' />
+    <link href='/admin/css/ui-custom.css' rel='stylesheet' type='text/css' />
+    <link th:href="${#tck.getVersion('/admin/css//view/admin.css')}" rel='stylesheet' type='text/css' />
+</th:block>
+<style>
+    #img_modal{
+        position: fixed;
+        top: 10%;
+        left: 40%;
+        z-index: 1050;
+        width: auto;
+
+    }
+      .review_rating{width: 100%; height:30px; overflow: hidden; margin: 0 auto; }
+  .rating {display: inline-block;}
+  .rating > input {display: none; margin: 0 5px;}
+  .rating > label:before {display: inline-block; content: "\f005"; background: url('/p_images/i_star_off.png') 0 0 no-repeat; width:30px; height:30px; color:rgba(0,0,0,0); background-size: 30px;}
+  .rating > input[type="radio"] + label {color: #999; float: right; margin: 0 5px;}
+  .rating > input:checked ~ label{content: "\f005"; display: inline-block; background: url('/p_images/i_star_on.png'); width:30px; height:30px; padding: 0; background-size: 30px; z-index: 5;}
+  .rating > input:checked ~ label:before {background:none;}
+
+
+</style>
+<!-- Main Content -->
+
+<div id="content" layout:fragment="content">
+
+    <nav th:replace="adm/fragments/topbar :: TopbarFragment"></nav>
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="mb-2 text-gray-800 content-title">이벤트 관리</h1>
+
+        <form name="Searchfrm" id="Searchfrm" method="post">
+            <input type="hidden" id="adminNo" name="adminNo" />
+            <input type="hidden" id="currentPageNo" name="currentPageNo" />
+            <div class="row" id="SearchRow">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary" style="display: inline;">
+                                <span class="txt-info">검색</span>
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="con_search_form">
+                                <table class="table table-bordered" summary="이벤트 참여자 검색">
+                                    <colgroup>
+                                        <col style="width: 15%;">
+                                        <col style="width: 35%;">
+                                        <col style="width: 15%;">
+                                        <col style="width: 35%;">
+                                    </colgroup>
+                                    <tr>
+                                        <th>고객명</th>
+                                        <td>
+                                            <input type="text" id="searchCustName" name="searchCustName" class="form-control" style="width: 335px;" />
+                                        </td>
+                                        <th>휴대폰 번호</th>
+                                        <td>
+                                            <input type="text" id="searchTelNum" name="searchTelNum" class="form-control" style="width: 335px;" data-phone='Y' />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>이메일 주소</th>
+                                        <td>
+                                            <input type="text" id="searchEmail" name="searchEmail" class="form-control" style="width: 335px;" />
+                                        </td>
+                                        <th>공개여부</th>
+                                        <td>
+                                            <select name="searchOpenType" id="searchOpenType"  class="form-control" style="width: 200px;">
+                                                <option value="">선택</option>
+                                                <option value="Y">Y</option>
+                                                <option value="N">N</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <th>동록기간</th>
+                                    <td colspan="3">
+                                        <input type="text" id="searchKeywordFrom" name="searchKeywordFrom" class="form-control datepicker" readonly /> - <input type="text" id="searchKeywordTo" name="searchKeywordTo" class="form-control datepicker" readonly />
+                                    </td>
+                                </table>
+                            </div>
+                            <div class="col-lg-12" style="text-align: center;">
+                                <button type="button" class="btn btn-sm btn-primary" onClick="TckJS.PageUtil.goSearch(); return false;">검색</button>
+                                <button type="button" class="btn btn-sm btn-danger" onClick="TckJS.PageUtil.ReSetSearch(); return false;">초기화</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="card shadow mb-4 main-table">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <span class="txt-info">전체 - <span id="tcnts" th:text="${paginationInfo.totalRecordCount}"></span>건</span>
+                </h6>
+
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th style="width: 140px;">편의점 본사</th>
+                            <th style="width: 140px;">점포명</th>
+                            <th style="width: 140px;">전화번호</th>
+                            <th style="width: 210px;">이름</th>
+                            <th style="width: 140px;">이미지명(번호)</th>
+                            <th style="width: 100px;">좋아요</th>
+                            <th style="width: 100px;">다운로드</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="list,data : ${listData}">
+                            <tr>
+                                <td th:text="${list.getName()}"></td>
+                                <td th:text="${list.getEmail()}"></td>
+                                <td th:text="${list.getTelNum()}"></td>
+                                <td th:text="${list.getName()}"></td>
+                                <td>
+                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4 imgC" style="width: 25rem;" th:src="${list.imageUrl}" th:alt="${list.originName}">
+                                </td>
+                                <td>
+                                    <div class="review_rating">
+                                        <fieldset class="rating">
+                                            <input type="radio" id="rating_1_star5" name="rating_1" value="5.0"><label for="rating_1_star5"></label>
+                                            <input type="radio" id="rating_1_star4" name="rating_1" value="4.0"><label for="rating_1_star4"></label>
+                                            <input type="radio" id="rating_1_star3" name="rating_1" value="3.0"><label for="rating_1_star3"></label>
+                                            <input type="radio" id="rating_1_star2" name="rating_1" value="2.0"><label for="rating_1_star2"></label>
+                                            <input type="radio" id="rating_1_star1" name="rating_1" value="1.0"><label for="rating_1_star1"></label>
+                                        </fieldset>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a class="btn" onclick="ImgDown(); return false;">다운로드</a>
+                                </td>
+                            </tr>
+                        </th:block>
+                        <tr th:if="${paginationInfo.totalRecordCount == 0}">
+                            <td id="listEmpty" colspan="7">데이터가 없습니다.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--pagination-->
+                <div style="overflow-x: auto;">
+                    <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate" style="margin-right: 5px;">
+                        <ul class="pagination bootpag" th:utext="*{#paginationInfo.renderPagination(paginationInfo,'TckJS.PageUtil.goPage')}"></ul>
+                    </div>
+                </div>
+                <!--//pagination-->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Main Content -->
+
+
+<div layout:fragment="modal">
+    <!-- 팝업 될 곳 -->
+    <div class="modal" id="img_modal" style="top:50%; left:50%; width: auto; ">
+        <button>&times;</button>
+        <div class="modalBox">
+            <img src="" alt="">
+            <p></p>
+        </div>
+    </div>
+    <!-- 끝-->
+</div>
+<th:block layout:fragment="script">
+    <script th:src="${#tck.getVersion('/admin/js/view/event_board.js')}"></script>
+    <script>
+
+
+		/*<![CDATA[*/
+        var setData = []
+		setData.push({ formID : "Searchfrm" ,targatID : "currentPageNo", val : "[[ ${param.currentPageNo} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchCustName", val : "[[ ${param.searchCustName} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchKeywordFrom", val : "[[ ${param.searchKeywordFrom} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchKeywordTo", val : "[[ ${param.searchKeywordTo} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchTelNum", val :"[[ ${param.searchTelNum} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchEmail", val :"[[ ${param.searchEmail} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchOpenType", val :"[[ ${param.searchOpenType} ]]" });
+
+		$(document).ready(function() {
+			TckJS.Util.AlertMode = "layer";
+			EventBoardJS.init();
+			TckJS.PageUtil.init(setData,null);
+			TckJS.PageUtil.EnterSubmit("#searchKeyword","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchCustName","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchTelNum","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchEmail","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchOpenType","#Searchfrm");
+
+
+		});
+				function ImgDown(){
+				ImgUtil.Down($("#Searchfrm"),"/adm/admin/img_down" ,"MDeal_참여자_관리", "MDeal_참여자_관리");
+			}
+
+		/*]]>*/
+	</script>
+</th:block>
+</body>
+</html>
