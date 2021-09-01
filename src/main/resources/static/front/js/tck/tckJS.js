@@ -328,7 +328,54 @@ TckJS.Ajax = TckJS.prototype = {
                    alert(err.status);
    			}
 		});
-	}
+	},
+	postAjaxFormLoding: function (strURL, objData, resultHandler) {
+            TckJS.Util.Loding();
+
+            $.ajax({
+                type: 'POST',
+                url: strURL,
+                data: objData,
+                processData: false,
+                contentType: false,
+                success: function (res) {
+                    TckJS.Util.LayoutClose();
+                    if (res == null || res == undefined) {
+                        alert("오류가 발생하였습니다.");
+                        return;
+                    }
+
+                    if (res.resultCode == "LOGIN") {
+                        alert("로그인이 필요합니다.");
+                        location.href = "/adm/logIn";
+                        return;
+                    }
+
+                    if (res.resultCode != "0000") {
+                        if (res.resultMsg != undefined) {
+                            alert(res.resultMsg);
+
+                            console.log(res);
+                        } else {
+                            alert("오류가 발생하였습니다.");
+                        }
+                        return;
+                    }
+                    resultHandler(res);
+                },
+                beforeSend: function () {
+                    /* 통신 전 process (ex. 로딩바 표시) */
+                },
+                error: function (err) {
+                    /* 통신 에러 발생시 process */
+                    // alert(err.status);
+                    // alert(err.statusText);
+                    TckJS.Util.LayoutClose();
+                    alert("오류가 발생하였습니다.");
+                    console.log(err);
+                }
+            });
+        },
 };
 
 TckJS.Cookie = TckJS.prototype = {

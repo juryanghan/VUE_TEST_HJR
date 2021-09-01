@@ -1,0 +1,20 @@
+.file_input_hidden
+{
+	font-size: 23px;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	-ms-filter: "alpha(opacity=0)";
+	-khtml-opacity: 0;
+	-moz-opacity: 0;
+
+}
+
+.file_input_div
+{
+	float: left;
+	margin-left: 5px;
+	padding-top: 3px;
+}

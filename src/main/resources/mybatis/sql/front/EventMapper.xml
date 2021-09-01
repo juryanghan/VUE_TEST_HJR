@@ -15,5 +15,23 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jti.event.front.mapper.event.EventMapper">
-
+    <insert id="eventAdd" parameterType="EventParam">
+        INSERT INTO tb_event (
+            name,
+            tel_num,
+            email,
+            image_path,
+            image_url,
+            origin_name,
+            image_size
+        )VALUES(
+            #{name},
+            #{telNum},
+            #{email},
+            #{imagePath},
+            #{imageUrl},
+            #{originName},
+            #{imageSize}
+        )
+    </insert>
 </mapper>

@@ -1,40 +1,70 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="front/layout/default_footer">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="front/layout/default">
 <body>
 	<th:block layout:fragment="css">
+        <link href='/front/css/bootstrap.css' rel='stylesheet' type='text/css' />
+        <link th:href="${#tck.getVersion('/front/css/view/event.css')}" rel='stylesheet' type='text/css' />
 	</th:block>
 	  <!--content-->
     <div class="content main event2" layout:fragment="content">
         <div class="container w1300">
+            <form name="frm" id="frm" method="post">
             <div class="title">
-                <h2>
-                    그랜저 IG, 팰리세이드 고객 대상 미쉐린타이어 프로모션
-                    <strong>
-                        블루핸즈에서 미쉐린 타이어 교체시 <br class="dp-n-1070" />
-                        미쉐린 캐리어 증정
-                    </strong>
-                </h2>
-                <p>
-                    블루핸즈 대리점에서 미쉐린 타이어를 구매한 <br class="dp-b-767" />
-                    그랜저 IG, 팰리세이드 고객에 한하여 미쉐린 캐리어를 증정합니다. <br />
-                    <span>(준비된 재고 소진 시, 캐리어 색상 선택이 불가능할 수 있습니다.) </span>
-                </p>
+                <table border="5px">
+                    <tr>
+                        <td>
+                            이름 : <input type="text" id="name" name="name" data-required="이름">
+                        </td>
+                        <td rowspan="2">
+                            <div class="modal-content" style="width:200px; height:200px;" id="img01">
+                                <img id="defaultImg" style="width:200px; height:200px;" src="admin/img/placeholder.png">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            연락처 : <input type="text" id="telNum" name="telNum" data-required="연락처" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            이메일 : <input type="text" id="email" name="email" data-required="이메일">
+                        </td>
+
+                        <td>
+                            <input type="text" id="eventImageFileName" name="eventImageFileName" class="form-control" style="width:335px;float: left;" onclick="EventJS.goFileUpload('eventImageFile'); return false;" data-required="이미지" readonly/>
+                            <div class="file_input_div">
+                                <button class="btn btn-sm btn-primary" onclick="EventJS.goFileUpload('eventImageFile'); return false;" type="button" >찾아보기</button>
+                                <input type="file" id="eventImageFile" name="eventImageFile" accept="image/*"  class="file_input_hidden" onChange="EventJS.uploadImageChange(event, this, 'eventImageFileName' )" />
+                            </div>
+                            <div style="margin-top: 40px;font-size: 13px;font-weight: bold;">이미지는 500*250 사이즈를 권장 합니다.</div>
+                        </td>
+                    </tr>
+
+                </table>
+
+
             </div>
-            <ul>
-                <li>2021년 12월 31일까지</li>
-                <li>미쉐린 캐리어 1개</li>
-                <li>마이 현대 앱에서 등록된 그랜저 IG, 팰레세이드 차량 보유 고객 중 블루핸즈에서 미쉐린 타이어를 4본 이상 구매한 고객</li>
-            </ul>
-            <a href="/frt/product/index" class="btn-blue">주문하기</a>
-            <div class="imgmain01"></div>
-            <div class="imgmain02"></div>
-            <div class="white-bg"></div>
+            <button type="button" class="btn btn-sm btn-primary" onClick="EventJS.eventAdd(); return false;">등록</button>
+            </form>
         </div>
     </div>
+
     <!--// content-->
-	<th:block layout:fragment="script">
-		<script th:inline="javascript">
+    <th:block layout:fragment="script">
+        <script type="text/javascript" src="/admin/js/lib/plupload/plupload.js"></script>
+        <script type="text/javascript" src="/admin/js/lib/plupload/plupload.html5.js"></script>
+        <script type="text/javascript" src="/admin/js/lib/plupload/plupload.flash.js"></script>
+        <script type="text/javascript" src="/admin/js/lib/plupload/uploadUtil.js"></script>
+        <script th:src="${#tck.getVersion('/front/js/common.js')}"></script>
+        <script th:src="${#tck.getVersion('/front/js/view/event.js')}"></script>
+
+        <script>
 			/*<![CDATA[*/
+			    $(document).ready(function() {
+				EventJS.init();
+			});
+
 			/*]]>*/
 		</script>
 	</th:block>

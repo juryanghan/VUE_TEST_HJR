@@ -29,6 +29,6 @@
 		<mapper resource="mybatis/sql/admin/AuthMapper.xml"/>
 		
 		<!-- FRONT -->
-
+        <mapper resource="mybatis/sql/front/EventMapper.xml"/>
     </mappers>
 </configuration>

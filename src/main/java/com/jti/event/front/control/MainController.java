@@ -2,6 +2,8 @@ package com.jti.event.front.control;
 
 import com.jti.event.common.model.BaseResult;
 import com.jti.event.exception.ServiceException;
+import com.jti.event.front.model.event.param.EventParam;
+import com.jti.event.front.service.event.EventService;
 import com.jti.event.util.AES256Util;
 import com.jti.event.util.CouponCreate;
 import com.jti.event.util.WebUtil;
@@ -23,10 +25,25 @@ public class MainController {
 	
 	private final Log log = LogFactory.getLog(MainController.class);
 
+	@Autowired
+	private EventService eventService;
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		log.debug("/frt");
 		ModelAndView mav = new ModelAndView("front/view/main/index");
 		return mav;
 	}
+
+//	@RequestMapping(value = "/ajax/add")
+//	public BaseResult add(HttpServletRequest req, HttpServletResponse res, EventParam eventParam){
+//		log.debug("/add");
+//		BaseResult result = new BaseResult();
+//		result.setResultCode("0000");
+//		result.setResultMsg("정상");
+//
+//		eventService.eventAdd(eventParam);
+//
+//		return result;
+//	}
 }
