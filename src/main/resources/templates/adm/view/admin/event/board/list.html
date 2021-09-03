@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="adm/layout/default">
+<body>
+
+<th:block layout:fragment="css">
+    <link href='/admin/css/bootstrap-multiselect.css' rel='stylesheet' type='text/css' />
+    <link href='/admin/css/bootstrap-customized.css' rel='stylesheet' type='text/css' />
+    <link href='/admin/css/jquery-ui.css' rel='stylesheet' type='text/css' />
+    <link href='/admin/css/datepicker.css' rel='stylesheet' type='text/css' />
+    <link href='/admin/css/ui-custom.css' rel='stylesheet' type='text/css' />
+    <link th:href="${#tck.getVersion('/admin/css//view/admin.css')}" rel='stylesheet' type='text/css' />
+    <style>
+    #img_modal{
+            position: fixed;
+            top: 10%;
+            left: 40%;
+            z-index: 1050;
+            width: auto;
+
+        }
+    #myform div{
+        display: inline-block;
+        direction: rtl;
+        border: 0;
+    }
+    #myform div legend{
+        text-align: left;
+    }
+    #myform input[type=radio]{
+        display: none;
+    }
+    #myform label{
+        font-size: 1.1em;
+        color: transparent;
+        text-shadow: 0 0 0 #f0f0f0;
+    }
+    #myform label:hover{
+        text-shadow: 0 0 0 #ffff00;
+    }
+    #myform label:hover ~ label{
+        text-shadow: 0 0 0 #ffff00;
+    }
+    #myform input[type=radio]:checked ~ label{
+        text-shadow: 0 0 0 #ffff00;
+    }
+</style>
+</th:block>
+
+<!-- Main Content -->
+
+<div id="content" layout:fragment="content">
+
+    <nav th:replace="adm/fragments/topbar :: TopbarFragment"></nav>
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="mb-2 text-gray-800 content-title">이벤트 관리</h1>
+
+        <form name="Searchfrm" id="Searchfrm" method="post">
+            <input type="hidden" id="adminNo" name="adminNo" />
+            <input type="hidden" id="like" name="like" />
+            <input type="hidden" id="currentPageNo" name="currentPageNo" />
+            <div class="row" id="SearchRow">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary" style="display: inline;">
+                                <span class="txt-info">검색</span>
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="con_search_form">
+                                <table class="table table-bordered" summary="이벤트 참여자 검색">
+                                    <colgroup>
+                                        <col style="width: 15%;">
+                                    </colgroup>
+                                    <tr>
+                                        <td>
+                                            <input type="text" id="searchKeyword" name="searchKeyword" class="form-control" style="width: 335px;" />
+                                            <div class="col-lg-12" style="text-align: center;">
+                                                <button type="button" class="btn btn-sm btn-primary" onClick="TckJS.PageUtil.goSearch(); return false;">검색</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="card shadow mb-4 main-table">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <span class="txt-info">전체 - <span id="tcnts" th:text="${paginationInfo.totalRecordCount}"></span>건</span>
+                </h6>
+                <a href="/adm/admin/event/imgList">imglist</a>
+
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th style="width: 140px;">편의점 본사</th>
+                            <th style="width: 100px;">점포명</th>
+                            <th style="width: 140px;">전화번호</th>
+                            <th style="width: 140px;">이름</th>
+                            <th style="width: 140px;">이미지명(번호)</th>
+                            <th style="width: 140px;">추천인</th>
+                            <th style="width: 100px;">좋아요</th>
+                            <th style="width: 100px;">다운로드</th>
+                            <th style="width: 100px;">삭제</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="list,data : ${listData}">
+                            <tr>
+                                <td th:text="${list.eventNo}"></td>
+                                <td th:text="${list.storeName}"></td>
+                                <td th:text="|${list.getTelNum()}|"></td>
+                                <td th:text="${list.getName()}"></td>
+                                <td>
+                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4 imgC" name="ImageList" style="width: 25rem;" th:src="${list.imageUrl}" th:alt="${list.originName}">
+                                </td>
+                                <td th:text="${list.recommendedName}"></td>
+                                <td name="myform" id="myform" th:value="${list.like}">
+                                        <div>
+<!--                                            <span th:if="${list.like  == 5}">-->
+<!--                                                <input type="radio" name="rating" th:value="${list.like}" id="rate5" checked="ture"><label for="rate5" th:onclick="Like([[${list.eventNo}]],5)" >⭐</label>-->
+<!--                                                <input type="radio" name="rating" th:value="${list.like}" id="rate4" ><label for="rate4" th:onclick="Like([[${list.eventNo}]],4)">⭐</label>-->
+<!--                                                <input type="radio" name="rating" th:value="${list.like}" id="rate3" ><label for="rate3" th:onclick="Like([[${list.eventNo}]],3)">⭐</label>-->
+<!--                                                <input type="radio" name="rating" th:value="${list.like}" id="rate2" ><label for="rate2" th:onclick="Like([[${list.eventNo}]],2)">⭐</label>-->
+<!--                                                <input type="radio" name="rating" th:value="${list.like}" id="rate1" ><label for="rate1" th:onclick="Like([[${list.eventNo}]],1)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}1|" name="rating" th:value="${list.like}"  checked="ture"><label th:for="|${list.eventNo}1|" th:onclick="Like([[${list.eventNo}]],5)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}2|" name="rating" th:value="${list.like}"  ><label th:for="|${list.eventNo}2|" th:onclick="Like([[${list.eventNo}]],4)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}3|" name="rating" th:value="${list.like}"  ><label th:for="|${list.eventNo}3|" th:onclick="Like([[${list.eventNo}]],3)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}4|" name="rating" th:value="${list.like}"  ><label th:for="|${list.eventNo}4|" th:onclick="Like([[${list.eventNo}]],2)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}5|" name="rating" th:value="${list.like}" ><label th:for="|${list.eventNo}5|" th:onclick="Like([[${list.eventNo}]],1)">⭐</label>-->
+<!--                                            </span>-->
+<!--                                            <span th:if="${list.like  == 4}">-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}1|" name="rating" th:value="${list.like}"  ><label th:for="|${list.eventNo}1|" th:onclick="Like([[${list.eventNo}]],5)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}2|" name="rating" th:value="${list.like}" checked="ture" ><label th:for="|${list.eventNo}2|" th:onclick="Like([[${list.eventNo}]],4)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}3|" name="rating" th:value="${list.like}"  ><label th:for="|${list.eventNo}3|" th:onclick="Like([[${list.eventNo}]],3)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}4|" name="rating" th:value="${list.like}"  ><label th:for="|${list.eventNo}4|" th:onclick="Like([[${list.eventNo}]],2)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}5|" name="rating" th:value="${list.like}" ><label th:for="|${list.eventNo}5|" th:onclick="Like([[${list.eventNo}]],1)">⭐</label>-->
+<!--                                            </span>-->
+<!--                                            <span th:if="${list.like  == 3}">-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}1|" name="rating" th:value="${list.like}"  ><label th:for="|${list.eventNo}1|" th:onclick="Like([[${list.eventNo}]],5)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}2|" name="rating" th:value="${list.like}"  ><label th:for="|${list.eventNo}2|" th:onclick="Like([[${list.eventNo}]],4)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}3|" name="rating" th:value="${list.like}" checked="ture" ><label th:for="|${list.eventNo}3|" th:onclick="Like([[${list.eventNo}]],3)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}4|" name="rating" th:value="${list.like}"  ><label th:for="|${list.eventNo}4|" th:onclick="Like([[${list.eventNo}]],2)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}5|" name="rating" th:value="${list.like}" ><label th:for="|${list.eventNo}5|" th:onclick="Like([[${list.eventNo}]],1)">⭐</label>-->
+<!--                                            </span>-->
+<!--                                            <span th:if="${list.like  == 2}">-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}1|" name="rating" th:value="${list.like}"  ><label th:for="|${list.eventNo}1|" th:onclick="Like([[${list.eventNo}]],5)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}2|" name="rating" th:value="${list.like}"><label th:for="|${list.eventNo}2|" th:onclick="Like([[${list.eventNo}]],4)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}3|" name="rating" th:value="${list.like}"  ><label th:for="|${list.eventNo}3|" th:onclick="Like([[${list.eventNo}]],3)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}4|" name="rating" th:value="${list.like}"  checked="ture"  ><label th:for="|${list.eventNo}4|" th:onclick="Like([[${list.eventNo}]],2)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}5|" name="rating" th:value="${list.like}" ><label th:for="|${list.eventNo}5|" th:onclick="Like([[${list.eventNo}]],1)">⭐</label>-->
+<!--                                            </span>-->
+<!--                                            <span th:if="${list.like  == 1}">-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}1|" name="rating" th:value="${list.like}"  ><label th:for="|${list.eventNo}1|" th:onclick="Like([[${list.eventNo}]],5)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}2|" name="rating" th:value="${list.like}"><label th:for="|${list.eventNo}2|" th:onclick="Like([[${list.eventNo}]],4)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}3|" name="rating" th:value="${list.like}"  ><label th:for="|${list.eventNo}3|" th:onclick="Like([[${list.eventNo}]],3)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}4|" name="rating" th:value="${list.like}"    ><label th:for="|${list.eventNo}4|" th:onclick="Like([[${list.eventNo}]],2)">⭐</label>-->
+<!--                                                <input type="radio" th:id="|${list.eventNo}5|" name="rating" th:value="${list.like}" checked="ture"><label th:for="|${list.eventNo}5|" th:onclick="Like([[${list.eventNo}]],1)">⭐</label>-->
+<!--                                            </span>-->
+
+<!--                                            <span th:if="${list.like  == 4}">-->
+<!--                                                <input type="radio" name="rating" th:value="${list.like}" id="rate4" checked="ture"><label for="rate4" th:onclick="Like([[${list.eventNo}]],4)">⭐</label>-->
+<!--                                            </span>-->
+<!--                                            <span th:if="${list.like  == 3}">-->
+<!--                                                <input type="radio" name="rating" th:value="${list.like}" id="rate3" checked="ture"><label for="rate3" th:onclick="Like([[${list.eventNo}]],3)">⭐</label>-->
+<!--                                            </span>-->
+<!--                                            <span th:if="${list.like  == 2}">-->
+<!--                                                <input type="radio" name="rating" th:value="${list.like}" id="rate2" checked="ture"><label for="rate2" th:onclick="Like([[${list.eventNo}]],2)">⭐</label>-->
+<!--                                            </span>-->
+<!--                                            <span th:if="${list.like  == 1}">-->
+<!--                                                <input type="radio" name="rating" th:value="${list.like}" id="rate1" checked="ture"><label for="rate1" th:onclick="Like([[${list.eventNo}]],1)">⭐</label>-->
+<!--                                            </span>-->
+<!--                                            <input type="radio" name="rating" th:value="${list.like}" id="rate5" th:if="${list.like  == 5}"><label for="rate5" th:onclick="Like([[${list.eventNo}]],5)">⭐</label>-->
+
+<!--                                            <input type="radio" th:with="a=${list.eventNo}" name="rating" th:value="${list.like}" th:id="${a}" th:attr="checked=${list.like  == 5 ? 'true' : 'false'}"><label th:for="${a}" th:onclick="Like([[${list.eventNo}]],5)">⭐</label>-->
+<!--                                            <input type="radio" th:with="b=${list.eventNo}" name="rating" th:value="${list.like}" th:id="${b}" th:attr="checked=${list.like  == 4 ? 'true' : 'false'}"><label th:for="${b}" th:onclick="Like([[${list.eventNo}]],4)">⭐</label>-->
+<!--                                            <input type="radio" th:with="c=${list.eventNo}" name="rating" th:value="${list.like}" th:id="${c}" th:attr="checked=${list.like  == 3 ? 'true' : 'false'}"><label th:for="${c}" th:onclick="Like([[${list.eventNo}]],3)">⭐</label>-->
+<!--                                            <input type="radio" th:with="d=${list.eventNo}" name="rating" th:value="${list.like}" th:id="${d}" th:attr="checked=${list.like  == 2 ? 'true' : 'false'}"><label th:for="${d}" th:onclick="Like([[${list.eventNo}]],2)">⭐</label>-->
+<!--                                            <input type="radio" th:with="e=${list.eventNo}" name="rating" th:value="${list.like}" th:id="${e}" th:attr="checked=${list.like  == 1 ? 'true' : 'false'}"><label th:for="${e}" th:onclick="Like([[${list.eventNo}]],1)">⭐</label>-->
+
+                                            <input type="radio" id="rate1" name="rating" th:value="${list.like}"  th:attr="checked=${list.like  == 5 ? 'true' : 'false'}"><label for="rate5" th:onclick="Like([[${list.eventNo}]],5)">⭐</label>
+                                            <input type="radio" id="rate2" name="rating" th:value="${list.like}"  th:attr="checked=${list.like  == 4 ? 'true' : 'false'}"><label for="rate4" th:onclick="Like([[${list.eventNo}]],4)">⭐</label>
+                                            <input type="radio" id="rate3" name="rating" th:value="${list.like}"  th:attr="checked=${list.like  == 3 ? 'true' : 'false'}"><label for="rate3" th:onclick="Like([[${list.eventNo}]],3)">⭐</label>
+                                            <input type="radio" id="rate4" name="rating" th:value="${list.like}"  th:attr="checked=${list.like  == 2 ? 'true' : 'false'}"><label for="rate2" th:onclick="Like([[${list.eventNo}]],2)">⭐</label>
+                                            <input type="radio" id="rate5" name="rating" th:value="${list.like}"  th:attr="checked=${list.like  == 1 ? 'true' : 'false'}"><label for="rate1" th:onclick="Like([[${list.eventNo}]],1)">⭐</label>
+
+<!--                                            <input type="radio" name="rating" th:value="${list.like}" id="rate5" th:checked="${list.like  == 5 ? 'checked' : ''}"><label for="rate5" th:onclick="Like([[${list.eventNo}]],5)">⭐</label>-->
+<!--                                            <input type="radio" name="rating" th:value="${list.like}" id="rate4" th:checked="${list.like  == 4 ? 'checked' : ''}"><label for="rate4" th:onclick="Like([[${list.eventNo}]],4)">⭐</label>-->
+<!--                                            <input type="radio" name="rating" th:value="${list.like}" id="rate3" th:checked="${list.like  == 3 ? 'checked' : ''}"><label for="rate3" th:onclick="Like([[${list.eventNo}]],3)">⭐</label>-->
+<!--                                            <input type="radio" name="rating" th:value="${list.like}" id="rate2" th:checked="${list.like  == 2 ? 'checked' : ''}"><label for="rate2" th:onclick="Like([[${list.eventNo}]],2)">⭐</label>-->
+<!--                                            <input type="radio" name="rating" th:value="${list.like}" id="rate1" th:checked="${list.like  == 1 ? 'checked' : ''}"><label for="rate1" th:onclick="Like([[${list.eventNo}]],1)">⭐</label>-->
+                                        </div>
+                                </td>
+                                <td>
+                                   <input type="checkbox" class="selectImg" name='selectImg' th:value="${list.eventNo}">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-info" th:if="${list.openYn == 'N'}"
+                                            th:onclick="EventBoardJS.deleteBtn([[${list.eventNo}]],[[${list.openYn}]]);">
+                                        삭제
+                                    </button>
+                                </td>
+                            </tr>
+                        </th:block>
+                        <tr th:if="${paginationInfo.totalRecordCount == 0}">
+                            <td id="listEmpty" colspan="7">데이터가 없습니다.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!--<button type="button" id="all_download" class="btn btn-sm btn-primary" onclick="EventBoardJS.selectImg()" style="float: right;">다운로드</button>-->
+                    <button type="button" id="all_download" class="btn btn-sm btn-primary"  style="float: right;">다운로드</button>
+                </div>
+                <!--pagination-->
+                <div style="overflow-x: auto;">
+                    <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate" style="margin-right: 5px;">
+                        <ul class="pagination bootpag" th:utext="*{#paginationInfo.renderPagination(paginationInfo,'TckJS.PageUtil.goPage')}"></ul>
+                    </div>
+                </div>
+                <!--//pagination-->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Main Content -->
+
+
+<div layout:fragment="modal">
+    <!-- 팝업 될 곳 -->
+    <div class="modal" id="img_modal" style="top:50%; left:50%; width: auto; ">
+        <button>&times;</button>
+        <div class="modalBox">
+            <img src="" alt="">
+            <p></p>
+        </div>
+    </div>
+    <!-- 끝-->
+</div>
+<th:block layout:fragment="script">
+    <script th:src="${#tck.getVersion('/admin/js/view/event_board.js')}"></script>
+    <script th:src="${#tck.getVersion('/admin/js/tck/excel_util.js')}"></script>
+    <script>
+		/*<![CDATA[*/
+        var setData = []
+		setData.push({ formID : "Searchfrm" ,targatID : "currentPageNo", val : "[[ ${param.currentPageNo} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchCustName", val : "[[ ${param.searchCustName} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchKeywordFrom", val : "[[ ${param.searchKeywordFrom} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchKeywordTo", val : "[[ ${param.searchKeywordTo} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchTelNum", val :"[[ ${param.searchTelNum} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchEmail", val :"[[ ${param.searchEmail} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchOpenType", val :"[[ ${param.searchOpenType} ]]" });
+
+		$(document).ready(function() {
+			TckJS.Util.AlertMode = "layer";
+			EventBoardJS.init();
+			TckJS.PageUtil.init(setData,null);
+			TckJS.PageUtil.EnterSubmit("#searchKeyword","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchCustName","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchTelNum","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchEmail","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchOpenType","#Searchfrm");
+
+			 var iFrameCnt = 0;
+
+               $('#all_download').click(function(event){
+                $('img[name*="ImageList"]').each(function(i){ //img 태그중 ImageList 명으로 시작하는 요소를 가져옴
+
+                       urlPath = $(this).attr("src"); //전체 URL 경로
+                       fileName = $(this).attr("src").substring($(this).attr("src").lastIndexOf("/")+1);
+
+                       var url = "/image/download?urlPath="+urlPath+"&fileName="+fileName;
+
+                       fnCreateIframe(iFrameCnt); // 보이지 않는 iframe 생성, name는 숫자로
+
+                       $("iframe[name=" + iFrameCnt + "]").attr("src", url);
+
+                       iFrameCnt++;
+
+                       fnSleep(1000); //각 파일별 시간 텀을 준다
+
+                   });
+
+               });
+
+               fnSleep = function (delay){
+
+                   var start = new Date().getTime();
+                   while (start + delay > new Date().getTime());
+
+               };
+
+               fnCreateIframe = function (name){
+
+                   var frm = $('<iframe name="' + name + '" style="display: none;"></iframe>');
+                   frm.appendTo("body");
+
+               }
+		});
+
+		function Like(eventNo,like){
+            $("#Searchfrm").find("#like").val(like);
+             TckJS.Ajax.postAjaxLoding("/adm/admin/ajax/like", {eventNo:eventNo , like:like}, function (res) {
+                 location.reload();
+             });
+		}
+<!--		function selectImg(){-->
+<!--		alert("DD")-->
+<!--		if(!$(".selectImg").is(":checked")) {-->
+<!--			TckJS.Util.Alert("선택된 항목이 없습니다.");-->
+<!--			return;-->
+<!--		}-->
+<!--		ExcelUtil.Down($(".selectImg:checked").serializeArray(),"/adm/admin/download" ,"이미지다운", "이미지다운");-->
+<!--		}-->
+
+<!--		function selectImg(){-->
+<!--		alert("DD")-->
+<!--		if(!$(".selectImg").is(":checked")) {-->
+<!--			TckJS.Util.Alert("선택된 항목이 없습니다.");-->
+<!--			return;-->
+<!--		}-->
+<!--		ExcelUtil.Down($(".selectImg:checked").serializeArray(),"/adm/admin/download" ,"이미지다운", "이미지다운");-->
+<!--		}-->
+
+
+
+		/*]]>*/
+	</script>
+</th:block>
+</body>
+</html>

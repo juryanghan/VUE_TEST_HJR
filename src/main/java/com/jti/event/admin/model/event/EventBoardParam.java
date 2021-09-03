@@ -10,6 +10,8 @@ import java.security.GeneralSecurityException;
 @Data
 public class EventBoardParam extends ComDefaultVO {
     private Integer eventNo;
+    private String searchConvenienceStoreName;
+    private String searchStore;
     private String searchCustName;
     private String searchCustName_Encrypt;
     private String searchTelNum;

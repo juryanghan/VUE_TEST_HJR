@@ -8,10 +8,10 @@ public class ComDefaultVO extends Base implements Serializable {
     private int currentPageNo = 1;
     
     /** 한 페이지당 게시되는 게시물 건 수 */
-    private int recordCountPerPage = 10;
+    private int recordCountPerPage = 12;
     
     /** 페이지 리스트에 게시되는 페이지 건수 */
-    private int pageSize = 10;
+    private int pageSize = 12;
     
     /** 전체 게시물 건 수 */
     private int totalRecordCount = 0;

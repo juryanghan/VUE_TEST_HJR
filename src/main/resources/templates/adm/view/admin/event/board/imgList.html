@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="adm/layout/default">
+<body>
+
+<th:block layout:fragment="css">
+    <link href='/admin/css/bootstrap-multiselect.css' rel='stylesheet' type='text/css' />
+    <link href='/admin/css/bootstrap-customized.css' rel='stylesheet' type='text/css' />
+    <link href='/admin/css/jquery-ui.css' rel='stylesheet' type='text/css' />
+    <link href='/admin/css/datepicker.css' rel='stylesheet' type='text/css' />
+    <link href='/admin/css/ui-custom.css' rel='stylesheet' type='text/css' />
+    <link href='/admin/css/view/imgList.css' rel='stylesheet' type='text/css' />
+    <link th:href="${#tck.getVersion('/admin/css//view/admin.css')}" rel='stylesheet' type='text/css' />
+<style>
+
+</style>
+</th:block>
+
+<!-- Main Content -->
+
+<div id="content" layout:fragment="content">
+
+    <nav th:replace="adm/fragments/topbar :: TopbarFragment"></nav>
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="mb-2 text-gray-800 content-title">이벤트 관리</h1>
+
+        <form name="Searchfrm" id="Searchfrm" method="post">
+            <input type="hidden" id="adminNo" name="adminNo" />
+            <input type="hidden" id="currentPageNo" name="currentPageNo" />
+            <div class="row" id="SearchRow">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary" style="display: inline;">
+                                <span class="txt-info">검색</span>
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="con_search_form">
+                                <table class="table table-bordered" summary="이벤트 참여자 검색">
+                                    <colgroup>
+                                        <col style="width: 15%;">
+                                    </colgroup>
+                                    <tr>
+                                        <td>
+                                            <input type="text" id="search" name="search" class="form-control" style="width: 335px;" />
+                                            <div class="col-lg-12" style="text-align: center;">
+                                                <button type="button" class="btn btn-sm btn-primary" onClick="TckJS.PageUtil.goSearch(); return false;">검색</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!--Pattern HTML-->
+        <div id="pattern" class="pattern">
+            <ul class="list img-list">
+                <th:block th:each="list,data : ${listData}">
+                <li>
+                        <div class="li-img">
+<!--                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4 imgC" style="width: 25rem;" th:src="${list.imageUrl}" th:alt="${list.originName}">-->
+                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4 imgC" src="http://placehold.it/600x600" alt="Image Alt Text" />
+                        </div>
+                        <div class="li-text">
+                            <h4 class="li-head" th:text="|${list.getName()}/${list.convenienceStoreName}|"></h4>
+                            <p class="li-sub" th:text="${list.originName}"></p>
+                            <div name="myform" id="myform">
+                                <div>
+                                    <input type="checkbox" class="selectImg" name='selectImg' th:value="${list.eventNo}">
+                                    <input type="radio" name="rating" th:value="${list.like}" id="rate5" th:attr="checked=${list.like  == 5 ? 'true' : 'false'}"><label for="rate5" th:onclick="Like([[${list.eventNo}]],5)">⭐</label>
+                                    <input type="radio" name="rating" th:value="${list.like}" id="rate4" th:attr="checked=${list.like  == 4 ? 'true' : 'false'}"><label for="rate4" th:onclick="Like([[${list.eventNo}]],4)">⭐</label>
+                                    <input type="radio" name="rating" th:value="${list.like}" id="rate3" th:attr="checked=${list.like  == 3 ? 'true' : 'false'}"><label for="rate3" th:onclick="Like([[${list.eventNo}]],3)">⭐</label>
+                                    <input type="radio" name="rating" th:value="${list.like}" id="rate2" th:attr="checked=${list.like  == 2 ? 'true' : 'false'}"><label for="rate2" th:onclick="Like([[${list.eventNo}]],2)">⭐</label>
+                                    <input type="radio" name="rating" th:value="${list.like}"id="rate1"  th:attr="checked=${list.like  == 1 ? 'true' : 'false'}"><label for="rate1" th:onclick="Like([[${list.eventNo}]],1)">⭐</label>
+                                </div>
+                            </div>
+                        </div>
+                </li>
+                </th:block>
+                <li th:if="${paginationInfo.totalRecordCount == 0}">
+                    <a id="listEmpty" colspan="4">데이터가 없습니다.</a>
+                </li>
+            </ul>
+            <button type="button" class="btn btn-sm btn-primary" onclick="EventBoardJS.selectImg()">다운로드</button>
+        </div>
+        <!--End Pattern HTML-->
+                <!--pagination-->
+                <div style="overflow-x: auto;">
+                    <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate" style="margin-right: 5px;">
+                        <ul class="pagination bootpag" th:utext="*{#paginationInfo.renderPagination(paginationInfo,'TckJS.PageUtil.goPage')}"></ul>
+                    </div>
+                </div>
+                <!--//pagination-->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Main Content -->
+
+<div layout:fragment="modal">
+    <!-- 팝업 될 곳 -->
+    <div class="modal" id="img_modal" style="top:25%; left:50%; width: auto; ">
+        <button>&times;</button>
+        <div class="modalBox">
+            <img src="" alt="">
+            <p></p>
+        </div>
+    </div>
+    <!-- 끝-->
+</div>
+<th:block layout:fragment="script">
+    <script th:src="${#tck.getVersion('/admin/js/view/event_board.js')}"></script>
+    <script th:src="${#tck.getVersion('/admin/js/tck/excel_util.js')}"></script>
+    <script>
+
+
+		/*<![CDATA[*/
+        var setData = []
+		setData.push({ formID : "Searchfrm" ,targatID : "currentPageNo", val : "[[ ${param.currentPageNo} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchCustName", val : "[[ ${param.searchCustName} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchKeywordFrom", val : "[[ ${param.searchKeywordFrom} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchKeywordTo", val : "[[ ${param.searchKeywordTo} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchTelNum", val :"[[ ${param.searchTelNum} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchEmail", val :"[[ ${param.searchEmail} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchOpenType", val :"[[ ${param.searchOpenType} ]]" });
+
+		$(document).ready(function() {
+			TckJS.Util.AlertMode = "layer";
+			EventBoardJS.init();
+			TckJS.PageUtil.init(setData,null);
+			TckJS.PageUtil.EnterSubmit("#searchKeyword","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchCustName","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchTelNum","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchEmail","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchOpenType","#Searchfrm");
+
+
+		});
+
+
+		function Like(eventNo,like){
+            $("#Searchfrm").find("#like").val(like);
+             TckJS.Ajax.postAjaxLoding("/adm/admin/ajax/like", {eventNo:eventNo , like:like}, function (res) {
+                 location.reload();
+             });
+		}
+
+		    //radio 버튼 클릭 이벤트
+            $("input:radio[name=rating]").click(function(){
+
+                if($("input:radio[name=rating]:checked").val()=='select'){
+                 TckJS.Ajax.postAjaxLoding("/adm/admin/like", requestData, function (res) {
+                 location.reload();
+                });
+
+                }
+            });
+
+
+
+		/*]]>*/
+	</script>
+</th:block>
+</body>
+</html>
