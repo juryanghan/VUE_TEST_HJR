@@ -6,13 +6,11 @@ var EventBoardJS = {
     	$(".imgC").click(function(){
     		$(".modal").show();
 
-    		var imgSrc = $('.imgC').attr('src');
-    		var imgAlt = $('imgC').attr('alt');
+    		var imgSrc = $(this).attr('src');
+    		var imgAlt = $(this).attr('alt');
     		$(".modalBox img").attr("src", imgSrc);
     		$(".modalBox img").attr("alt", imgAlt);
 
-       // 해당 이미지에 alt값을 가져와 제목으로
-    		//$(".modalBox p").text(imgAlt);
     	});
 
     	//.modal닫기
@@ -30,12 +28,6 @@ var EventBoardJS = {
         });
     },
     Like : function(eventNo,like) {
-//    var star = $("input:radio[name=rating]:checked").val();
-//                    $("#myform").find("#like").val(star);
-//
-//             TckJS.Ajax.postAjaxLoding("/adm/admin/like", {eventNo:eventNo}, function (res) {
-//                 location.reload();
-//             });
             $("#Searchfrm").find("#like").val(like);
              TckJS.Ajax.postAjaxLoding("/adm/admin/ajax/like", {eventNo:eventNo , like:like}, function (res) {
                  location.reload();
@@ -59,9 +51,9 @@ var EventBoardJS = {
 			return;
 		}
 
-		/*ExcelUtil.Down($("#Searchfrm"),"/adm/admin/download" ,"이미지다운", "이미지다운");*/
-			$(".imgC").val("dlalwl.png");
-        	$("#Searchfrm").attr("action", "/adm/admin/download").submit();
+		ExcelUtil.Down($("#Searchfrm"),"/adm/admin/download" ,"이미지다운.jpg", "이미지다운.jpg");
+//			$(".imgC").val("dlalwl.png");
+//        	$("#Searchfrm").attr("action", "/adm/admin/download").submit();
     },
     deleteBtn : function(eventNo,openYn){
             if(openYn =="Y"){

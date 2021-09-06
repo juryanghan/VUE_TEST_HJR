@@ -44,19 +44,14 @@
                 tb_event AS a
         WHERE 1=1
         AND open_yn = 'N'
-        <if test="searchConvenienceStoreName != null and searchConvenienceStoreName != ''">
-            AND a.convenienceStore_name  = #{searchConvenienceStoreName}
-        </if>
-        <if test="searchStore != null and searchStore != ''">
-            AND a.store_name  = #{searchStore}
-        </if>
-        <if test="searchCustName_Encrypt != null and searchCustName_Encrypt != ''">
+        <if test="searchKeyword != null and searchKeyword != ''">
             AND
-             a.name LIKE CONCAT('%', #{searchCustName_Encrypt}, '%')
-        </if>
-        <if test="searchTelNum_Encrypt != null and searchTelNum_Encrypt != ''">
-            AND
-            a.tel_num LIKE CONCAT('%', #{searchTelNum_Encrypt}, '%')
+            (
+            a.convenienceStore_name  LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR a.store_name LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR a.name LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR a.tel_num LIKE CONCAT('%', #{searchKeyword}, '%')
+            )
         </if>
         ORDER BY event_no DESC
         LIMIT #{firstRecordIndex}, #{lastRecordIndex}

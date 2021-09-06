@@ -21,18 +21,24 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
 @RequestMapping("adm/admin")
 class EventBoardController {
 
+    private static final String FILE_SERVER_PATH = "C:/Users/svc/com.jti.event/upload";
     private final Log log = LogFactory.getLog(EventBoardController.class);
 
     @Autowired
@@ -215,14 +221,14 @@ class EventBoardController {
 //        return mav;
 //    }
 
-//    /**
-//     *
-//     * 이미지 다운로드
-//     * */
+    /**
+     *
+     * 이미지 다운로드
+     * */
 //    @RequestMapping(value="/download")
 //    public ModelAndView download(HttpServletRequest req, HttpServletResponse res ,EventBoardParam eventBoardParam, String fileName, String sheetName) throws ParseException {
 //        log.debug("/adm/admin/download");
-//        ModelAndView mav = new ModelAndView("downloadFile");
+//        ModelAndView mav = new ModelAndView("DownloadView");
 //
 //        List<String> listColumn = new ArrayList<String>();
 //        List<List<Object>> listData = new ArrayList<List<Object>>();
@@ -253,19 +259,16 @@ class EventBoardController {
      * 이미지 다운로드
      * */
     @RequestMapping(value="/download")
-    public ModelAndView download(ModelMap model, HttpServletRequest req, HttpServletResponse res , @RequestParam("originName") String originName, String imageUrl) throws ParseException {
-        log.debug("/adm/admin/download");
-        ModelAndView mav = new ModelAndView("downloadFile");
+    public ModelAndView download(@RequestParam HashMap<Object, Object> params, ModelAndView mv) {
+        ModelAndView mav = new ModelAndView("DownloadView");
 
+        String fileName = (String) params.get("fileName");
+        String fullPath = FILE_SERVER_PATH + "/" + fileName;
+        File file = new File(fullPath);
 
-
-        String filePath = "C:\\upload\\";
-        File file = new File(filePath+originName);
-
-        model.addAttribute("originName",originName);
-        model.addAttribute("imageUrl",imageUrl);
-
-        return new ModelAndView("fileDownload","downloadFile",file);
+        mv.setViewName("DownloadView");
+        mv.addObject("downloadFile", file);
+        return mv;
     }
 
 

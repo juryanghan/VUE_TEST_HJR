@@ -33,8 +33,6 @@ public class FileController {
 	@Resource(name="fileUtils") 
 	private FileUtils fileUtils;
 
-	private static final String FILE_SERVER_PATH = "C:/test";
-
 
 	/*
 	 * 파일 업로드
@@ -70,18 +68,6 @@ public class FileController {
 		return Result;
 	}
 
-	@RequestMapping("/download")
-	public ModelAndView download(@RequestParam HashMap<Object, Object> params, ModelAndView mv) {
-		String fileName = (String) params.get("fileName");
-		String fullPath = FILE_SERVER_PATH + "/" + fileName;
-		File file = new File(fullPath);
 
-		mv.setViewName("downloadView");
-		mv.addObject("downloadFile", file);
-		return mv;
-	}
-
-
-	
 
 }

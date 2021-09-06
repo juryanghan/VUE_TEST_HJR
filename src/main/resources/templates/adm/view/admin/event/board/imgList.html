@@ -11,6 +11,31 @@
     <link href='/admin/css/view/imgList.css' rel='stylesheet' type='text/css' />
     <link th:href="${#tck.getVersion('/admin/css//view/admin.css')}" rel='stylesheet' type='text/css' />
 <style>
+    #myform div{
+        display: inline-block;
+        direction: rtl;
+        border: 0;
+    }
+    #myform div legend{
+        text-align: left;
+    }
+    #myform input[name=rating]{
+        display: none;
+    }
+    #myform label{
+        font-size: 1.1em;
+        color: transparent;
+        text-shadow: 0 0 0 #f0f0f0;
+    }
+    #myform label:hover{
+        text-shadow: 0 0 0 #ffff00;
+    }
+    #myform label:hover ~ label{
+        text-shadow: 0 0 0 #ffff00;
+    }
+    #myform input[type=checkbox]:checked ~ label{
+        text-shadow: 0 0 0 #ffff00;
+    }
 
 </style>
 </th:block>
@@ -45,7 +70,7 @@
                                     </colgroup>
                                     <tr>
                                         <td>
-                                            <input type="text" id="search" name="search" class="form-control" style="width: 335px;" />
+                                            <input type="text" id="searchKeyword" name="searchKeyword" class="form-control" style="width: 335px;" />
                                             <div class="col-lg-12" style="text-align: center;">
                                                 <button type="button" class="btn btn-sm btn-primary" onClick="TckJS.PageUtil.goSearch(); return false;">검색</button>
                                             </div>
@@ -61,6 +86,7 @@
 
         <!--Pattern HTML-->
         <div id="pattern" class="pattern">
+            <a href="/adm/admin/event">리스트 정렬</a>
             <ul class="list img-list">
                 <th:block th:each="list,data : ${listData}">
                 <li>
@@ -74,11 +100,11 @@
                             <div name="myform" id="myform">
                                 <div>
                                     <input type="checkbox" class="selectImg" name='selectImg' th:value="${list.eventNo}">
-                                    <input type="radio" name="rating" th:value="${list.like}" id="rate5" th:attr="checked=${list.like  == 5 ? 'true' : 'false'}"><label for="rate5" th:onclick="Like([[${list.eventNo}]],5)">⭐</label>
-                                    <input type="radio" name="rating" th:value="${list.like}" id="rate4" th:attr="checked=${list.like  == 4 ? 'true' : 'false'}"><label for="rate4" th:onclick="Like([[${list.eventNo}]],4)">⭐</label>
-                                    <input type="radio" name="rating" th:value="${list.like}" id="rate3" th:attr="checked=${list.like  == 3 ? 'true' : 'false'}"><label for="rate3" th:onclick="Like([[${list.eventNo}]],3)">⭐</label>
-                                    <input type="radio" name="rating" th:value="${list.like}" id="rate2" th:attr="checked=${list.like  == 2 ? 'true' : 'false'}"><label for="rate2" th:onclick="Like([[${list.eventNo}]],2)">⭐</label>
-                                    <input type="radio" name="rating" th:value="${list.like}"id="rate1"  th:attr="checked=${list.like  == 1 ? 'true' : 'false'}"><label for="rate1" th:onclick="Like([[${list.eventNo}]],1)">⭐</label>
+                                    <input type="checkbox" name="rating" th:value="${list.like}" id="rate5" th:attr="checked=${list.like  == 5 ? 'true' : 'false'}"><label for="rate5" th:onclick="Like([[${list.eventNo}]],5)">⭐</label>
+                                    <input type="checkbox" name="rating" th:value="${list.like}" id="rate4" th:attr="checked=${list.like  == 4 ? 'true' : 'false'}"><label for="rate4" th:onclick="Like([[${list.eventNo}]],4)">⭐</label>
+                                    <input type="checkbox" name="rating" th:value="${list.like}" id="rate3" th:attr="checked=${list.like  == 3 ? 'true' : 'false'}"><label for="rate3" th:onclick="Like([[${list.eventNo}]],3)">⭐</label>
+                                    <input type="checkbox" name="rating" th:value="${list.like}" id="rate2" th:attr="checked=${list.like  == 2 ? 'true' : 'false'}"><label for="rate2" th:onclick="Like([[${list.eventNo}]],2)">⭐</label>
+                                    <input type="checkbox" name="rating" th:value="${list.like}"id="rate1"  th:attr="checked=${list.like  == 1 ? 'true' : 'false'}"><label for="rate1" th:onclick="Like([[${list.eventNo}]],1)">⭐</label>
                                 </div>
                             </div>
                         </div>
@@ -124,22 +150,13 @@
 		/*<![CDATA[*/
         var setData = []
 		setData.push({ formID : "Searchfrm" ,targatID : "currentPageNo", val : "[[ ${param.currentPageNo} ]]" });
-		setData.push({ formID : "Searchfrm" ,targatID : "searchCustName", val : "[[ ${param.searchCustName} ]]" });
-		setData.push({ formID : "Searchfrm" ,targatID : "searchKeywordFrom", val : "[[ ${param.searchKeywordFrom} ]]" });
-		setData.push({ formID : "Searchfrm" ,targatID : "searchKeywordTo", val : "[[ ${param.searchKeywordTo} ]]" });
-		setData.push({ formID : "Searchfrm" ,targatID : "searchTelNum", val :"[[ ${param.searchTelNum} ]]" });
-		setData.push({ formID : "Searchfrm" ,targatID : "searchEmail", val :"[[ ${param.searchEmail} ]]" });
-		setData.push({ formID : "Searchfrm" ,targatID : "searchOpenType", val :"[[ ${param.searchOpenType} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchKeyword", val : "[[ ${param.searchKeyword} ]]" });
 
 		$(document).ready(function() {
 			TckJS.Util.AlertMode = "layer";
 			EventBoardJS.init();
 			TckJS.PageUtil.init(setData,null);
 			TckJS.PageUtil.EnterSubmit("#searchKeyword","#Searchfrm");
-			TckJS.PageUtil.EnterSubmit("#searchCustName","#Searchfrm");
-			TckJS.PageUtil.EnterSubmit("#searchTelNum","#Searchfrm");
-			TckJS.PageUtil.EnterSubmit("#searchEmail","#Searchfrm");
-			TckJS.PageUtil.EnterSubmit("#searchOpenType","#Searchfrm");
 
 
 		});
@@ -151,18 +168,6 @@
                  location.reload();
              });
 		}
-
-		    //radio 버튼 클릭 이벤트
-            $("input:radio[name=rating]").click(function(){
-
-                if($("input:radio[name=rating]:checked").val()=='select'){
-                 TckJS.Ajax.postAjaxLoding("/adm/admin/like", requestData, function (res) {
-                 location.reload();
-                });
-
-                }
-            });
-
 
 
 		/*]]>*/
