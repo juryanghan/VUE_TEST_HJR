@@ -20,6 +20,7 @@ public class EventBoard extends Base {
     private String regDt; //등록일
     private String content; //내용
     private String imageUrl;//이미지경로
+    private String imagePath;//이미지경로
     private String originName; //이미지이름
     private String recommendedName; //추천인
     private String openYn;//공개여부

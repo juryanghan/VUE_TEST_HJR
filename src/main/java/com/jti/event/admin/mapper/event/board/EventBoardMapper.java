@@ -22,6 +22,13 @@ public interface EventBoardMapper {
      *
      */
     public List<EventBoard> listEventBoard (EventBoardParam param);
+    /**
+     * 이벤트 엑셀 목록
+     *
+     */
+    public List<EventBoard> listEventBoardExcel (EventBoardParam param);
+    public List<EventBoard> listEventBoardSelectExcel (EventBoardParam param);
+
 
     /**
      * * 이벤트 참여 삭제 처리
@@ -36,7 +43,7 @@ public interface EventBoardMapper {
     /**
      * 이미지 다운로드
      * */
-    public List<EventBoard> selectImg(EventBoardParam eventBoardParam);
+    public EventBoard selectImg(EventBoardParam eventBoardParam);
 
     /**
      * 점포등록
@@ -52,4 +59,6 @@ public interface EventBoardMapper {
      * 점포 카운트
      * */
     public int countStore(StoreParam param);
+
+    List<Store> selectConvenienceStore(EventBoardParam param);
 }

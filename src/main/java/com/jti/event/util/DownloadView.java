@@ -20,25 +20,14 @@ public class DownloadView extends AbstractView {
             throws Exception {
 
         File file = (File)model.get("downloadFile");
+        String fileName = (String)model.get("downloadFileName");
         if(file != null) {
-            String fileName = null;
             String userAgent = request.getHeader("User-Agent");
 
             if(userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1){
-                fileName = URLEncoder.encode(file.getName(), "utf-8").replaceAll("\\+", "%20");;
-            }else if(userAgent.indexOf("Chrome") > -1) {
-                StringBuffer sb = new StringBuffer();
-                for(int i=0; i<file.getName().length(); i++) {
-                    char c = file.getName().charAt(i);
-                    if(c > '~') {
-                        sb.append(URLEncoder.encode(""+c, "UTF-8"));
-                    }else {
-                        sb.append(c);
-                    }
-                }
-                fileName = sb.toString();
+                fileName = URLEncoder.encode(fileName, "utf-8").replaceAll("\\+", "%20");;
             }else {
-                fileName = new String(file.getName().getBytes("utf-8"));
+                fileName = new String(fileName.getBytes("utf-8"));
             }
             response.setContentType(getContentType());
             response.setContentLength((int)file.length());
@@ -52,7 +41,7 @@ public class DownloadView extends AbstractView {
                 FileCopyUtils.copy(fis, out);
             } catch(Exception e){
                 e.printStackTrace();
-            }finally{
+            } finally{
                 if(fis != null){
                     try{
                         fis.close();

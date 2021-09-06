@@ -4,32 +4,41 @@ var EventBoardJS = {
 
        //이미지 클릭시 해당 이미지 모달
     	$(".imgC").click(function(){
-    		$(".modal").show();
-
     		var imgSrc = $(this).attr('src');
     		var imgAlt = $(this).attr('alt');
     		$(".modalBox img").attr("src", imgSrc);
     		$(".modalBox img").attr("alt", imgAlt);
 
+    		$("#filefrm").find("#eventNo").val($(this).data("event_no"));
+    		$('#img_modal').modal('show');
+
     	});
 
     	//.modal닫기
-    	$(".modal button").click(function(){
-    		$(".modal").hide();
+    	$(".img_modal button").click(function(){
+    		$('#img_modal').modal('hide');
     	});
 
-    	//.modal밖에 클릭시 닫힘
-    	$(".modal").click(function (e) {
-            if (e.target.className != "modal") {
-              return false;
-            } else {
-              $(".modal").hide();
-            }
-        });
+       //작품설명 클릭시 해당 이미지 모달
+//        $(".content_view").click(function(){
+//        alert("Dddd")
+//            var content = $(#content_view).val();
+//            $(".modalContentBox p").text(content);
+//            $(".filefrm").find("#event_No").val($(this).data("event_no"));
+//
+//            $('#content_modal').modal('show');
+//
+//            });
+//
+//       //.modal닫기
+//        $(".content_modal button").click(function(){
+//            $('#content_modal').modal('hide');
+//        });
     },
     Like : function(eventNo,like) {
             $("#Searchfrm").find("#like").val(like);
              TckJS.Ajax.postAjaxLoding("/adm/admin/ajax/like", {eventNo:eventNo , like:like}, function (res) {
+                 alert("처리되었습니다.");
                  location.reload();
              });
     },
@@ -45,16 +54,27 @@ var EventBoardJS = {
                 location.reload();
              });
     },
-    selectImg: function(){
+    ExcelDown: function(){
 		if(!$(".selectImg").is(":checked")) {
 			TckJS.Util.Alert("선택된 항목이 없습니다.");
 			return;
 		}
 
-		ExcelUtil.Down($("#Searchfrm"),"/adm/admin/download" ,"이미지다운.jpg", "이미지다운.jpg");
-//			$(".imgC").val("dlalwl.png");
-//        	$("#Searchfrm").attr("action", "/adm/admin/download").submit();
+		var selectImg = $(".selectImg:checked");
+		var selectKey = [];
+		for(var i = 0; i < selectImg.length; i++){
+ 		    selectKey.push(selectImg[i].value);
+		}
+
+		var eventNos = selectKey.join(",")
+		$("#Searchfrm").find("#eventNos").val(eventNos);
+		ExcelUtil.Down($("#Searchfrm"),"/adm/admin/excel_select_download" ,"이벤트_참여_내역", "이벤트_참여_내역");
+
+
     },
+    ExcelDownAll : function(){
+        ExcelUtil.Down($("#Searchfrm"),"/adm/admin/excel_download" ,"이벤트_참여_내역(전체)", "이벤트_참여_내역(전체)");
+     },
     deleteBtn : function(eventNo,openYn){
             if(openYn =="Y"){
                         alert("이미 처리되어있습니다.");
@@ -67,40 +87,5 @@ var EventBoardJS = {
                 location.reload();
             });
     },
-    imgModal: function(){
-
-//      //이미지 클릭시 해당 이미지 모달
-//    	$(".imgC").click(function(){
-//    		$(".modal").show();
-//    		// 해당 이미지 가져오기
-//    		var imgSrc = $('.imgC').attr('src');
-//    		var imgAlt = $('imgC').attr('alt');
-//    		$(".modalBox img").attr("src", imgSrc);
-//    		$(".modalBox img").attr("alt", imgAlt);
-//
-//    <!--		// 해당 이미지 텍스트 가져오기-->
-//    <!--		var imgTit =  $(this).children("p").text();-->
-//    <!--		$(".modalBox p").text(imgTit);-->
-//
-//       // 해당 이미지에 alt값을 가져와 제목으로
-//    		//$(".modalBox p").text(imgAlt);
-//    	});
-//
-//    	//.modal안에 button을 클릭하면 .modal닫기
-//    	$(".modal button").click(function(){
-//    		$(".modal").hide();
-//    	});
-//
-//    	//.modal밖에 클릭시 닫힘
-//    	$(".modal").click(function (e) {
-//            if (e.target.className != "modal") {
-//              return false;
-//            } else {
-//              $(".modal").hide();
-//            }
-//        });
-
-
-    }
 }
 /*]]>*/

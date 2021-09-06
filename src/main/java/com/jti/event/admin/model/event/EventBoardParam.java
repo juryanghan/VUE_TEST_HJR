@@ -10,6 +10,8 @@ import java.security.GeneralSecurityException;
 @Data
 public class EventBoardParam extends ComDefaultVO {
     private Integer eventNo;
+    private String eventNos;
+    private Integer convenienceStoreNo;
     private String searchConvenienceStoreName;
     private String searchStore;
     private String searchCustName;
@@ -18,8 +20,23 @@ public class EventBoardParam extends ComDefaultVO {
     private String SearchTelNum_Encrypt;
     private String searchEmail;
     private String searchOpenType;
+    private String searchRecommendedName;
+    private String searchRecommendedName_Encrypt;
     private String searchStartDt;
     private String searchEndDt;
+
+    public String getSearchRecommendedName_Encrypt(){
+        if(this.searchRecommendedName != null && !this.searchRecommendedName.isEmpty()){
+            try {
+                return  new AES256Util().encrypt(this.searchRecommendedName);
+            } catch (GeneralSecurityException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return  this.searchRecommendedName;
+    }
 
     public String getSearchCustName_Encrypt(){
         if(this.searchCustName != null && !this.searchCustName.isEmpty()){

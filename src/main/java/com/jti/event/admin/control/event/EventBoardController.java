@@ -8,6 +8,7 @@ import com.jti.event.admin.service.event.board.EventBoardService;
 import com.jti.event.common.model.BaseResult;
 import com.jti.event.common.model.PaginationInfo;
 import com.jti.event.util.AES256Util;
+import com.jti.event.util.WebUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
@@ -38,7 +36,6 @@ import java.util.Map;
 @RequestMapping("adm/admin")
 class EventBoardController {
 
-    private static final String FILE_SERVER_PATH = "C:/Users/svc/com.jti.event/upload";
     private final Log log = LogFactory.getLog(EventBoardController.class);
 
     @Autowired
@@ -121,7 +118,7 @@ class EventBoardController {
             mav.addObject("listData", eventBoardService.listEventBoard(param));
         mav.addObject("param", param);
         mav.addObject("paginationInfo", paginationInfo);
-        System.out.println(eventBoardService.listEventBoard(param)+"ddddddd");
+        mav.addObject("convenienceStoreParam", eventBoardService.selectConvenienceStore(param));
 
 
         return mav;
@@ -152,6 +149,7 @@ class EventBoardController {
 
         mav.addObject("param", param);
         mav.addObject("paginationInfo", paginationInfo);
+        mav.addObject("convenienceStoreParam", eventBoardService.selectConvenienceStore(param));
 
 
         return mav;
@@ -223,52 +221,149 @@ class EventBoardController {
 
     /**
      *
-     * 이미지 다운로드
+     * 엑셀 다운로드
      * */
-//    @RequestMapping(value="/download")
-//    public ModelAndView download(HttpServletRequest req, HttpServletResponse res ,EventBoardParam eventBoardParam, String fileName, String sheetName) throws ParseException {
-//        log.debug("/adm/admin/download");
-//        ModelAndView mav = new ModelAndView("DownloadView");
-//
-//        List<String> listColumn = new ArrayList<String>();
-//        List<List<Object>> listData = new ArrayList<List<Object>>();
-//
-//        listColumn.add("이미지");
-//
-//        if(eventBoardService.countEventBoard(eventBoardParam) != 0){
-//            List<EventBoard> list = eventBoardService.selectImg(eventBoardParam);
-//            if (null != list && list.size() != 0) {
-//                for(EventBoard item : list){
-//                    List<Object> row = new ArrayList<Object>();
-//                    row.add(item.getImageUrl());
-//                    listData.add(row);
-//                }
-//            }
-//        }
-//
-//        mav.addObject("fileName", fileName);
-//        mav.addObject("sheetName", sheetName);
-//        mav.addObject("listData", listData);
-//        mav.addObject("listColumn", listColumn);
-//        mav.addObject("event",eventBoardService.selectImg(eventBoardParam));
-//
-//        return mav;
-//    }
+    @RequestMapping(value="/excel_download")
+    public ModelAndView excel_download(HttpServletRequest req, HttpServletResponse res ,EventBoardParam eventBoardParam, String fileName, String sheetName) throws ParseException {
+        log.debug("/adm/admin/excel_download");
+        ModelAndView mav = new ModelAndView("excelView");
+
+        List<String> listColumn = new ArrayList<String>();
+        List<List<Object>> listData = new ArrayList<List<Object>>();
+
+        listColumn.add("참여일");
+        listColumn.add("편의점 본사");
+        listColumn.add("점포명");
+        listColumn.add("이름");
+        listColumn.add("전화번호");
+        listColumn.add("추천인");
+        listColumn.add("이미지 URL");
+        listColumn.add("작품 설명");
+        listColumn.add("평점");
+
+        String URI = req.getRequestURL().toString().replace(req.getRequestURI().toString(),"");
+
+        if(eventBoardService.countEventBoard(eventBoardParam) != 0){
+            List<EventBoard> list = eventBoardService.listEventBoardExcel(eventBoardParam);
+            if (null != list && list.size() != 0) {
+                for(EventBoard item : list){
+                    List<Object> row = new ArrayList<Object>();
+                    row.add(item.getRegDt());
+                    row.add(item.getStoreName());
+                    row.add(item.getConvenienceStoreName());
+                    row.add(item.getName());
+                    row.add(item.getTelNum());
+                    row.add(item.getRecommendedName());
+                    row.add(URI +item.getImageUrl());
+                    row.add(item.getContent());
+                    row.add(item.getLike());
+                    listData.add(row);
+                }
+            }
+        }
+
+        mav.addObject("fileName", fileName);
+        mav.addObject("sheetName", sheetName);
+        mav.addObject("listData", listData);
+        mav.addObject("listColumn", listColumn);
+
+        return mav;
+    }
+
+    /**
+     *
+     * 엑셀 다운로드
+     * */
+    @RequestMapping(value="/excel_select_download")
+    public ModelAndView excel_select_download(HttpServletRequest req, HttpServletResponse res ,EventBoardParam eventBoardParam, String fileName, String sheetName) throws ParseException {
+        log.debug("/adm/admin/excel_download");
+        ModelAndView mav = new ModelAndView("excelView");
+
+        if(eventBoardParam.getEventNos() == null || eventBoardParam.getEventNos().isEmpty() ){
+            try {
+                return WebUtil.alertAndBack("잘못된 접근입니다.", res);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        List<String> listColumn = new ArrayList<String>();
+        List<List<Object>> listData = new ArrayList<List<Object>>();
+
+        listColumn.add("참여일");
+        listColumn.add("편의점 본사");
+        listColumn.add("점포명");
+        listColumn.add("이름");
+        listColumn.add("전화번호");
+        listColumn.add("추천인");
+        listColumn.add("이미지 URL");
+        listColumn.add("작품 설명");
+        listColumn.add("평점");
+
+        String URI = req.getRequestURL().toString().replace(req.getRequestURI().toString(),"");
+
+        if(eventBoardService.countEventBoard(eventBoardParam) != 0){
+            List<EventBoard> list = eventBoardService.listEventBoardSelectExcel(eventBoardParam);
+            if (null != list && list.size() != 0) {
+                for(EventBoard item : list){
+                    List<Object> row = new ArrayList<Object>();
+                    row.add(item.getRegDt());
+                    row.add(item.getStoreName());
+                    row.add(item.getConvenienceStoreName());
+                    row.add(item.getName());
+                    row.add(item.getTelNum());
+                    row.add(item.getRecommendedName());
+                    row.add(URI +item.getImageUrl());
+                    row.add(item.getContent());
+                    row.add(item.getLike());
+                    listData.add(row);
+                }
+            }
+        }
+
+        mav.addObject("fileName", fileName);
+        mav.addObject("sheetName", sheetName);
+        mav.addObject("listData", listData);
+        mav.addObject("listColumn", listColumn);
+
+        return mav;
+    }
+
     /**
      *
      * 이미지 다운로드
      * */
-    @RequestMapping(value="/download")
-    public ModelAndView download(@RequestParam HashMap<Object, Object> params, ModelAndView mv) {
+    @RequestMapping(value="/image_download")
+    public ModelAndView download(HttpServletRequest req, HttpServletResponse res, EventBoardParam param) {
+        log.debug("/adm/admin/image_download");
         ModelAndView mav = new ModelAndView("DownloadView");
 
-        String fileName = (String) params.get("fileName");
-        String fullPath = FILE_SERVER_PATH + "/" + fileName;
-        File file = new File(fullPath);
+        if(param.getEventNo() == null || param.getEventNo() == 0){
+            try {
+                return WebUtil.alertAndBack("잘못된 접근입니다.", res);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-        mv.setViewName("DownloadView");
-        mv.addObject("downloadFile", file);
-        return mv;
+        EventBoard event =  eventBoardService.selectImg(param);
+
+        File file = new File(event.getImagePath());
+        String fileName = event.getOriginName();
+
+        if(file == null || !file.exists()){
+            try {
+                return WebUtil.alertAndBack("파일이 존재하지 않습니다.", res);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        mav.setViewName("DownloadView");
+        mav.addObject("downloadFile", file);
+        mav.addObject("downloadFileName", fileName);
+        return mav;
     }
 
 

@@ -34,6 +34,18 @@ public class EventBoardService {
     }
 
     /**
+     * 이벤트참여 리스트 엑셀
+     * */
+    public List<EventBoard> listEventBoardExcel(EventBoardParam param) {
+        return eventBoardMapper.listEventBoardExcel(param);
+    }
+    public List<EventBoard> listEventBoardSelectExcel(EventBoardParam param) {
+        return eventBoardMapper.listEventBoardSelectExcel(param);
+    }
+
+
+
+    /**
      * * 이벤트 참여 처리
      * */
     public int deleteList(EventBoard param) {
@@ -50,7 +62,7 @@ public class EventBoardService {
     /**
      * 이미지 다운로드
      * */
-    public List<EventBoard> selectImg(EventBoardParam eventBoardParam) {
+    public EventBoard selectImg(EventBoardParam eventBoardParam) {
         return eventBoardMapper.selectImg(eventBoardParam);
     }
 
@@ -76,4 +88,7 @@ public class EventBoardService {
     }
 
 
+    public List<Store> selectConvenienceStore(EventBoardParam param) {
+        return eventBoardMapper.selectConvenienceStore(param);
+    }
 }

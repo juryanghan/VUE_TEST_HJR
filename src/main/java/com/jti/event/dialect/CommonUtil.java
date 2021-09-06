@@ -65,7 +65,7 @@ public class CommonUtil {
 	 */
 	public static String getAdminGroup(int val1) {
 		if(val1 == 100)
-			return "Michelin";
+			return "JTI";
 		else if(val1 == 110)
 			return "TCK-센터";
 		else if(val1 == 120)

@@ -9,15 +9,19 @@
     <link href='/admin/css/datepicker.css' rel='stylesheet' type='text/css' />
     <link href='/admin/css/ui-custom.css' rel='stylesheet' type='text/css' />
     <link th:href="${#tck.getVersion('/admin/css//view/admin.css')}" rel='stylesheet' type='text/css' />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
     <style>
-    #img_modal{
-            position: fixed;
-            top: 10%;
-            left: 40%;
-            z-index: 1050;
-            width: auto;
+<!--    #img_modal{-->
+<!--            position: fixed;-->
+<!--            top: 10%;-->
+<!--            left: 40%;-->
+<!--            z-index: 1050;-->
+<!--            width: auto;-->
 
-        }
+<!--        }-->
+    .pagination{
+        padding-left : 50%;
+    }
     #myform div{
         display: inline-block;
         direction: rtl;
@@ -43,6 +47,28 @@
     #myform input[type=checkbox]:checked ~ label{
         text-shadow: 0 0 0 #ffff00;
     }
+
+    .imgC {
+    cursor: pointer;
+    padding: 0 !important;
+    margin: 0 !important;
+     height: 140px;
+    }
+
+    #img_modal{
+        width: 1300px;
+        height: 880px;
+        margin-left: -650px;
+    }
+
+    #img_modal img{
+        width: 1280px;
+        height: 720px;
+    }
+    .table td {
+       vertical-align: middle;
+    }
+
 </style>
 </th:block>
 
@@ -57,8 +83,9 @@
         <!-- Page Heading -->
         <h1 class="mb-2 text-gray-800 content-title">이벤트 관리</h1>
 
+
         <form name="Searchfrm" id="Searchfrm" method="post">
-            <input type="hidden" id="adminNo" name="adminNo" />
+            <input type="hidden" id="eventNos" name="eventNos" />
             <input type="hidden" id="like" name="like" />
             <input type="hidden" id="currentPageNo" name="currentPageNo" />
             <div class="row" id="SearchRow">
@@ -74,16 +101,58 @@
                                 <table class="table table-bordered" summary="이벤트 참여자 검색">
                                     <colgroup>
                                         <col style="width: 15%;">
+                                        <col style="width: 35%;">
+                                        <col style="width: 15%;">
+                                        <col style="width: 35%;">
                                     </colgroup>
                                     <tr>
+                                        <th>
+                                            편의점 본사
+                                        </th>
                                         <td>
-                                            <input type="text" id="searchKeyword" name="searchKeyword" class="form-control" style="width: 335px;" />
-                                            <div class="col-lg-12" style="text-align: center;">
-                                                <button type="button" class="btn btn-sm btn-primary" onClick="TckJS.PageUtil.goSearch(); return false;">검색</button>
-                                            </div>
+                                            <select name="searchStore" id="searchStore" class="form-control" style="width: 200px;">
+                                                <option value="">선택</option>
+                                                <option value="세븐일레븐">세븐일레븐</option>
+                                                <option value="CU">CU</option>
+                                                <option value="GS">GS</option>
+                                            </select>
+                                        </td>
+                                        <th>점포명 </th>
+                                        <td>
+                                            <select class="js-example-placeholder-single js-states form-control" id="searchConvenienceStoreName" name="searchConvenienceStoreName">
+                                                <option value="">선택해주세요.</option>
+                                                <th:block th:each="list : ${convenienceStoreParam}">
+                                                    <option th:value="${list.convenienceStoreName}" th:text="${list.convenienceStoreName}"></option>
+                                                </th:block>
+                                            </select>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <th>전화번호</th>
+                                        <td>
+                                            <input type="text" id="searchTelNum" name="searchTelNum" class="form-control" style="width: 335px;" />
+                                        </td>
+                                        <th>이름</th>
+                                        <td>
+                                            <input type="text" id="searchCustName" name="searchCustName" class="form-control" style="width: 335px;" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>추천인</th>
+                                        <td>
+                                            <input type="text" id="searchRecommendedName" name="searchRecommendedName" class="form-control" style="width: 335px;" />
+                                        </td>
+                                        <th>참여일</th>
+                                        <td>
+                                            <input type="text" id="searchKeywordFrom" name="searchKeywordFrom" class="form-control datepicker" readonly /> - <input type="text" id="searchKeywordTo" name="searchKeywordTo" class="form-control datepicker" readonly />
+                                        </td>
+                                    </tr>
+
                                 </table>
+                            </div>
+                            <div class="col-lg-12" style="text-align: center;">
+                                <button type="button" class="btn btn-sm btn-primary" onClick="TckJS.PageUtil.goSearch(); return false;">검색</button>
+                                <button type="button" class="btn btn-sm btn-danger" onClick="TckJS.PageUtil.ReSetSearch(); return false;">초기화</button>
                             </div>
                         </div>
                     </div>
@@ -96,36 +165,44 @@
                 <h6 class="m-0 font-weight-bold text-primary">
                     <span class="txt-info">전체 - <span id="tcnts" th:text="${paginationInfo.totalRecordCount}"></span>건</span>
                 </h6>
-                <a href="/adm/admin/event/imgList">이미지 정렬</a>
-
+<!--                <a href="/adm/admin/event/imgList">이미지 정렬</a>-->
+                <button type="button" class="btn btn-sm btn-primary" th:onclick="EventBoardJS.ExcelDownAll()" style="float: right;margin-left: 5px;">다운로드(전체)</button>
+                <button type="button" class="btn btn-sm btn-info" th:onclick="EventBoardJS.ExcelDown()" style="float: right;">다운로드</button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0" style="text-align:center;">
                         <thead>
                         <tr>
-                            <th style="width: 140px;">편의점 본사</th>
+                            <th style="width: 25px;">다운로드</th>
+                            <th style="width: 50px;">참여일</th>
+                            <th style="width: 70px;">편의점 본사</th>
                             <th style="width: 100px;">점포명</th>
-                            <th style="width: 140px;">전화번호</th>
-                            <th style="width: 140px;">이름</th>
-                            <th style="width: 140px;">이미지명(번호)</th>
-                            <th style="width: 140px;">추천인</th>
-                            <th style="width: 100px;">좋아요</th>
-                            <th style="width: 100px;">다운로드</th>
-                            <th style="width: 100px;">삭제</th>
+                            <th style="width: 50px;">이름</th>
+                            <th style="width: 50px;">전화번호</th>
+                            <th style="width: 50px;">추천인</th>
+                            <th style="width: 50px;">이미지명</th>
+                            <th style="width: 140px;">작품 설명</th>
+                            <th style="width: 53px;">평점</th>
+                            <th style="width: 35px;">삭제</th>
                         </tr>
                         </thead>
                         <tbody>
                         <th:block th:each="list,data : ${listData}">
                             <tr>
-                                <td th:text="${list.eventNo}"></td>
-                                <td th:text="${list.storeName}"></td>
-                                <td th:text="|${list.getTelNum()}|"></td>
-                                <td th:text="${list.getName()}"></td>
                                 <td>
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4 imgC" id="imgC" name="ImageList" style="width: 25rem;" th:src="${list.imageUrl}" th:alt="${list.originName}">
+                                    <input type="checkbox" class="selectImg" name='selectImg' th:value="${list.eventNo}">
                                 </td>
+                                <td th:text="${list.regDt}"></td>
+                                <td th:text="${list.storeName}"></td>
+                                <td th:text="${list.convenienceStoreName}"></td>
+                                <td th:text="${list.getName()}"></td>
+                                <td th:text="|${list.getTelNum()}|"></td>
                                 <td th:text="${list.recommendedName}"></td>
+                                <td>
+                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4 imgC" id="imgC" name="ImageList" style="width: 25rem;" th:src="${list.imageUrl}" th:alt="${list.originName}" th:data-event_no="${list.eventNo}">
+                                </td>
+                                <td th:text="${list.getContent()}"></td>
                                 <td name="myform" id="myform" th:value="${list.like}">
                                         <div>
                                             <input type="checkbox" th:id="|${list.eventNo},1|" name="rating" th:value="${list.like}"  th:attr="checked=${list.like  == 5 ? 'true' : 'false'}"><label th:for="|${list.eventNo},1|" th:onclick="EventBoardJS.Like([[${list.eventNo}]],5)">⭐</label>
@@ -136,10 +213,7 @@
                                         </div>
                                 </td>
                                 <td>
-                                   <input type="checkbox" class="selectImg" name='selectImg' th:value="${list.eventNo}">
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-sm btn-info" th:if="${list.openYn == 'N'}"
+                                    <button type="button" class="btn btn-sm btn-danger" th:if="${list.openYn == 'N'}"
                                             th:onclick="EventBoardJS.deleteBtn([[${list.eventNo}]],[[${list.openYn}]]);">
                                         삭제
                                     </button>
@@ -147,16 +221,16 @@
                             </tr>
                         </th:block>
                         <tr th:if="${paginationInfo.totalRecordCount == 0}">
-                            <td id="listEmpty" colspan="7">데이터가 없습니다.</td>
+                            <td id="listEmpty" colspan="11">데이터가 없습니다.</td>
                         </tr>
                         </tbody>
                     </table>
-<!--                    <button type="button" id="all_download" class="btn btn-sm btn-primary" onclick="EventBoardJS.selectImg(${});" style="float: right;">다운로드</button>-->
-                    <button type="button" class="btn btn-sm btn-primary" th:onclick="EventBoardJS.selectImg()">다운로드</button>
+                    <button type="button" class="btn btn-sm btn-primary" th:onclick="EventBoardJS.ExcelDownAll()" style="float: right;margin-left: 5px;">다운로드(전체)</button>
+                    <button type="button" class="btn btn-sm btn-info" th:onclick="EventBoardJS.ExcelDown()" style="float: right;">다운로드</button>
                 </div>
                 <!--pagination-->
                 <div style="overflow-x: auto;">
-                    <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate" style="margin-right: 5px;">
+                    <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate" style="margin-right: 5px; text-align: center;">
                         <ul class="pagination bootpag" th:utext="*{#paginationInfo.renderPagination(paginationInfo,'TckJS.PageUtil.goPage')}"></ul>
                     </div>
                 </div>
@@ -167,54 +241,101 @@
 </div>
 <!-- End of Main Content -->
 
-
 <div layout:fragment="modal">
-    <!-- 팝업 될 곳 -->
-    <div class="modal" id="img_modal" style="top:25%; left:40%; width: auto; ">
-        <button>&times;</button>
-        <div class="modalBox">
-            <img src="" alt="">
-            <p></p>
+    <div id="img_modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+        <form name="filefrm" id="filefrm" method="post">
+            <input type="hidden" id="eventNo" name="eventNo" />
+        </form>
+        <div class="modal-header">
+            <h3>
+                이미지 보기
+            </h3>
+            <a class="close" data-dismiss="modal" aria-hidden="true">×</a>
+        </div>
+        <div class="modal-body">
+            <div class="modalBox">
+                <img src="" alt="">
+                <p></p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-primary" onclick="ImageDown()" >다운로드</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">닫기</button>
         </div>
     </div>
+
     <!-- 끝-->
 </div>
+
+
+
+<div layout:fragment="modal">
+    <div id="content_modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+        <form name="filefrm" class="filefrm" method="post">
+            <input type="hidden" id="event_No" name="eventNo" />
+        </form>
+        <div class="modal-header">
+            <h3>
+                작품 설명
+            </h3>
+        </div>
+        <div class="modal-body">
+            <div class="modalContentBox">
+                <p></p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">닫기</button>
+        </div>
+    </div>
+
+    <!-- 끝-->
+</div>
+
+
+
+
+
 <th:block layout:fragment="script">
     <script th:src="${#tck.getVersion('/admin/js/view/event_board.js')}"></script>
     <script th:src="${#tck.getVersion('/admin/js/tck/excel_util.js')}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
     <script>
 		/*<![CDATA[*/
         var setData = []
 		setData.push({ formID : "Searchfrm" ,targatID : "currentPageNo", val : "[[ ${param.currentPageNo} ]]" });
-		setData.push({ formID : "Searchfrm" ,targatID : "searchKeyword", val : "[[ ${param.searchKeyword} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchConvenienceStoreName", val : "[[ ${param.searchConvenienceStoreName} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchStore", val : "[[ ${param.searchStore} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchCustName", val : "[[ ${param.searchCustName} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchTelNum", val : "[[ ${param.searchTelNum} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchRecommendedName", val : "[[ ${param.searchRecommendedName} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchKeywordFrom", val : "[[ ${param.searchKeywordFrom} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchKeywordTo", val : "[[ ${param.searchKeywordTo} ]]" });
 
 		$(document).ready(function() {
 			TckJS.Util.AlertMode = "layer";
 			EventBoardJS.init();
 			TckJS.PageUtil.init(setData,null);
-			TckJS.PageUtil.EnterSubmit("#searchKeyword","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchConvenienceStoreName","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchStore","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchCustName","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchTelNum","#Searchfrm");
+			TckJS.PageUtil.EnterSubmit("#searchRecommendedName","#Searchfrm");
 
-
+			$(".js-example-placeholder-single").select2({
+                placeholder: "선택해주세요.",
+                allowClear: true
+            });
 		});
 
-		function selectImg(eventNo){
 
-		if(!$(".selectImg").is(":checked")) {
-			TckJS.Util.Alert("선택된 항목이 없습니다.");
-			return;
+
+
+		function ImageDown(){
+            $("#filefrm").attr("action","/adm/admin/image_download");
+            $("#filefrm").submit();
 		}
-		ExcelUtil.Down($("#Searchfrm"),"/adm/admin/download" ,"이미지다운", "이미지다운");
-		}
-
-<!--		function selectImg(){-->
-<!--		alert("DD")-->
-<!--		if(!$(".selectImg").is(":checked")) {-->
-<!--			TckJS.Util.Alert("선택된 항목이 없습니다.");-->
-<!--			return;-->
-<!--		}-->
-<!--		ExcelUtil.Down($(".selectImg:checked").serializeArray(),"/adm/admin/download" ,"이미지다운", "이미지다운");-->
-<!--		}-->
-
 
 		/*]]>*/
 	</script>
