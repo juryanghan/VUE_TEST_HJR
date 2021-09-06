@@ -3,6 +3,8 @@ package com.jti.event.admin.service.event.board;
 import com.jti.event.admin.mapper.event.board.EventBoardMapper;
 import com.jti.event.admin.model.event.EventBoard;
 import com.jti.event.admin.model.event.EventBoardParam;
+import com.jti.event.admin.model.event.Store;
+import com.jti.event.admin.model.event.StoreParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +36,44 @@ public class EventBoardService {
     /**
      * * 이벤트 참여 처리
      * */
-    public int updateEventProcess(EventBoard param) {
-        return eventBoardMapper.updateEventProcess(param);
+    public int deleteList(EventBoard param) {
+        return eventBoardMapper.deleteList(param);
     }
+
+    /**
+     *별점
+     * */
+    public int updateLike(EventBoard param) {
+        return eventBoardMapper.updateLike(param);
+    }
+
+    /**
+     * 이미지 다운로드
+     * */
+    public List<EventBoard> selectImg(EventBoardParam eventBoardParam) {
+        return eventBoardMapper.selectImg(eventBoardParam);
+    }
+
+    /**
+     * 점포 등록
+     * */
+    public int insertStore(Store store) {
+        return eventBoardMapper.insertStore(store);
+    }
+
+    /**
+     * 점포 목록
+     * */
+    public List<Store> listStore(StoreParam param) {
+        return eventBoardMapper.listStore(param);
+    }
+
+    /**
+     * 점포카운트
+     * */
+    public int countStore(StoreParam param) {
+        return eventBoardMapper.countStore(param);
+    }
+
+
 }

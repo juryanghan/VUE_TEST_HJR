@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="adm/layout/default">
+<body>
+
+	<th:block layout:fragment="css">
+		<link href='/admin/css/bootstrap-multiselect.css' rel='stylesheet' type='text/css' />
+		<link href='/admin/css/bootstrap-customized.css' rel='stylesheet' type='text/css' />
+		<link href='/admin/css/jquery-ui.css' rel='stylesheet' type='text/css' />
+		<link href='/admin/css/datepicker.css' rel='stylesheet' type='text/css' />
+		<link href='/admin/css/ui-custom.css' rel='stylesheet' type='text/css' />
+		<link th:href="${#tck.getVersion('/admin/css//view/admin.css')}" rel='stylesheet' type='text/css' />
+	</th:block>
+	<!-- Main Content -->
+
+	<div id="content" layout:fragment="content">
+
+		<nav th:replace="adm/fragments/topbar :: TopbarFragment"></nav>
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
+
+			<!-- Page Heading -->
+			<h1 class="mb-2 text-gray-800 content-title">점포 관리</h1>
+
+			<form name="Searchfrm" id="Searchfrm" method="post">
+				<input type="hidden" id="convenienceStoreNo" name="convenienceStoreNo" />
+				<input type="hidden" id="currentPageNo" name="currentPageNo" />
+				<div class="row" id="SearchRow">
+					<div class="col-lg-12">
+						<div class="card">
+							<div class="card-header py-3">
+								<h6 class="m-0 font-weight-bold text-primary" style="display: inline;">
+									<span class="txt-info">검색</span>
+								</h6>
+								<div style="float: right">
+									<button type="button" class="btn btn-sm btn-primary" id="btnInsert">신규 등록</button>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="con_search_form">
+									<table class="table table-bordered" summary="점포 검색">
+										<colgroup>
+											<col style="width: 15%;">
+										</colgroup>
+										<tr>
+											<th>
+												점포명
+											</th>
+											<td>
+												<input type="text" id="searchKeyword" name="searchKeyword" class="form-control" style="width: 335px;" />
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="col-lg-12" style="text-align: center;">
+									<button type="button" class="btn btn-sm btn-primary" onClick="TckJS.PageUtil.goSearch(); return false;">검색</button>
+									<button type="button" class="btn btn-sm btn-danger" onClick="TckJS.PageUtil.ReSetSearch(); return false;">초기화</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<div class="card shadow mb-4 main-table">
+				<div class="card-header py-3">
+					<h6 class="m-0 font-weight-bold text-primary">
+						<span class="txt-info">전체 - <span id="tcnts" th:text="${paginationInfo.totalRecordCount}"></span>건</span>
+					</h6>
+					
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+							<thead>
+								<tr>
+									<th>점포명</th>
+								</tr>
+							</thead>
+							<tbody>
+								<th:block th:each="list,data : ${store}">
+									<tr>
+										<td th:text="${list.convenienceStoreName}"></td>
+									</tr>
+								</th:block>
+								<tr th:if="${paginationInfo.totalRecordCount == 0}">
+									<td id="listEmpty" colspan="1">데이터가 없습니다.</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!--pagination-->
+					<div style="overflow-x: auto;">
+						<div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate" style="margin-right: 5px;">
+							<ul class="pagination bootpag" th:utext="*{#paginationInfo.renderPagination(paginationInfo,'TckJS.PageUtil.goPage')}"></ul>
+						</div>
+					</div>
+					<!--//pagination-->
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End of Main Content -->
+
+
+	<div layout:fragment="modal">
+		<!-- 관리자 등록/수정 모달 -->
+		<div th:replace="adm/fragments/admin/divInsertStore :: InsertStore"></div>
+		<!-- 관리자 등록/수정 모달 끝 -->
+	</div>
+	<th:block layout:fragment="script">
+		<script th:src="${#tck.getVersion('/admin/js/view/store.js')}"></script>
+		<script>
+		/*<![CDATA[*/
+		var setData = []
+		setData.push({ formID : "Searchfrm" ,targatID : "currentPageNo", val : "[[ ${storeParam.currentPageNo} ]]" });
+		setData.push({ formID : "Searchfrm" ,targatID : "searchKeyword", val : "[[ ${storeParam.searchKeyword} ]]" });
+
+		$(document).ready(function() {
+			StoreJS.init();
+			TckJS.Util.AlertMode = "layer";
+			TckJS.PageUtil.init(setData,null);
+			TckJS.PageUtil.EnterSubmit("#searchKeyword","#Searchfrm");
+
+			$("#btnInsert").click(function(){
+				StoreJS.SetDetail("I");
+			})
+		});
+		
+		/*]]>*/
+	</script>
+	</th:block>
+</body>
+</html>

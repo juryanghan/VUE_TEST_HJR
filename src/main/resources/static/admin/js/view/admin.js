@@ -6,6 +6,7 @@ var AdminJS = {
 	})
 
 
+
 	$("#InsertBtn").click(function() {
 		  var ValidateEl = $("#frm [data-required]");
             TckJS.ValidateUtil.ValidateCheck(ValidateEl, function () {

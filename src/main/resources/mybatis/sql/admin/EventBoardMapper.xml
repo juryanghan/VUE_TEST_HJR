@@ -23,29 +23,6 @@
                 COUNT(a.event_no)
         FROM
                 tb_event as a
-
-        WHERE 1=1
-
-        <if test="searchCustName_Encrypt != null and searchCustName_Encrypt != ''">
-            AND
-            a.name LIKE CONCAT('%', #{searchCustName_Encrypt}, '%')
-        </if>
-        <if test="searchTelNum_Encrypt != null and searchTelNum_Encrypt != ''">
-            AND
-            a.tel_num LIKE CONCAT('%', #{searchTelNum_Encrypt}, '%')
-        </if>
-        <if test="searchEmail_Encrypt != null and searchEmail_Encrypt != ''">
-            AND
-            a.email LIKE CONCAT('%', #{searchEmail_Encrypt}, '%')
-        </if>
-        <if test="searchKeywordFrom != null and searchKeywordFrom != ''">
-            <if test="searchKeywordTo != null and searchKeywordTo != ''">
-                AND a.reg_dt between #{searchKeywordFrom} AND CONCAT(#{searchKeywordTo},' 23:59:59')
-            </if>
-        </if>
-        <if test="searchOpenType != null and searchOpenType != ''">
-            AND a.open_yn  = #{searchOpenType}
-        </if>
     </select>
 
     <!-- 이벤트 정보 목록 -->
@@ -54,42 +31,42 @@
                 a.event_no as eventNo,
                 a.name as name,
                 a.tel_num as telNum,
-                a.email as email,
                 a.image_url as imageUrl,
-                a.title as title,
                 a.content as content,
                 a.reg_dt as regDt,
                 a.open_yn as openYn,
-                a.origin_name as originName
+                a.origin_name as originName,
+                a.store_name as storeName,
+                a.convenienceStore_name as convenienceStoreName,
+                a.`like`  as `like`,
+                a.recommended_name as recommendedName
         FROM
                 tb_event AS a
         WHERE 1=1
-        <if test="searchCustName_Encrypt != null and searchCustName_Encrypt != ''">
+        AND open_yn = 'N'
+        <if test="searchKeyword != null and searchKeyword != ''">
             AND
-             a.name LIKE CONCAT('%', #{searchCustName_Encrypt}, '%')
-        </if>
-        <if test="searchTelNum_Encrypt != null and searchTelNum_Encrypt != ''">
-            AND
-            a.tel_num LIKE CONCAT('%', #{searchTelNum_Encrypt}, '%')
-        </if>
-        <if test="searchEmail_Encrypt != null and searchEmail_Encrypt != ''">
-            AND
-            a.email LIKE CONCAT('%', #{searchEmail_Encrypt}, '%')
-        </if>
-        <if test="searchKeywordFrom != null and searchKeywordFrom != ''">
-            <if test="searchKeywordTo != null and searchKeywordTo != ''">
-                AND a.reg_dt between #{searchKeywordFrom} AND CONCAT(#{searchKeywordTo},' 23:59:59')
-            </if>
-        </if>
-        <if test="searchOpenType != null and searchOpenType != ''">
-            AND a.open_yn  = #{searchOpenType}
+            (
+            a.convenienceStore_name  LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR a.store_name LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR a.name LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR a.tel_num LIKE CONCAT('%', #{searchKeyword}, '%')
+            )
         </if>
         ORDER BY event_no DESC
         LIMIT #{firstRecordIndex}, #{lastRecordIndex}
     </select>
 
-    <!--이벤트 참여 처리 -->
-    <update id="updateEventProcess" parameterType="EventBoard">
+    <select id="selectImg" parameterType="EventBoardParam" resultType="EventBoard" >
+        SELECT
+                a.event_no as eventNo,
+                a.image_url as imageUrl
+        FROM
+                tb_event AS a
+    </select>
+
+    <!--이벤트 참여 삭제 처리 -->
+    <update id="deleteList" parameterType="EventBoard">
         UPDATE
                 tb_event
         SET
@@ -100,6 +77,48 @@
         AND
                 open_yn = 'N'
     </update>
+
+    <!--이벤트 참여 처리 -->
+    <update id="updateLike" parameterType="EventBoard">
+        UPDATE
+                tb_event
+        SET
+                `like` = #{like}
+        WHERE
+                 event_no = #{eventNo}
+    </update>
+
+    <!--점포등록 -->
+    <insert id="insertStore" parameterType="Store">
+        INSERT INTO
+        tb_convenienceStore (
+            convenienceStore_name
+        ) VALUES(
+            #{convenienceStoreName}
+        )
+    </insert>
+
+    <!--점포목록-->
+    <select id="listStore" parameterType="StoreParam" resultType="Store" >
+        SELECT
+                convenienceStore_no as convenienceStoreNo,
+                convenienceStore_name as convenienceStoreName
+        FROM tb_convenienceStore
+        WHERE	1 = 1
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND
+            (
+            convenienceStore_name LIKE CONCAT('%', #{searchKeyword}, '%')
+            )
+        </if>
+        LIMIT #{firstRecordIndex}, #{lastRecordIndex}
+    </select>
+
+    <select id="countStore" parameterType="StoreParam" resultType="int" >
+        SELECT
+        COUNT(convenienceStore_no)
+        FROM tb_convenienceStore
+    </select>
 
 
 </mapper>
