@@ -2,6 +2,7 @@ package com.jti.event.front.control;
 
 import com.jti.event.common.model.BaseResult;
 import com.jti.event.exception.ServiceException;
+import com.jti.event.front.model.event.EventMain;
 import com.jti.event.front.model.event.param.EventParam;
 import com.jti.event.front.service.event.EventService;
 import com.jti.event.util.AES256Util;
@@ -19,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -32,6 +35,9 @@ public class MainController {
 	public ModelAndView index(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		log.debug("/frt");
 		ModelAndView mav = new ModelAndView("front/view/main/index");
+		List<EventMain> em = new ArrayList<EventMain>();
+		em = eventService.getConvenienceStore();
+		mav.addObject("convenienceStore", em);
 		return mav;
 	}
 

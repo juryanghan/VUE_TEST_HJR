@@ -1,52 +1,122 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="front/layout/default">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <title>JTI</title>
+    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+</head>
 <body>
 	<th:block layout:fragment="css">
         <link href='/front/css/bootstrap.css' rel='stylesheet' type='text/css' />
         <link th:href="${#tck.getVersion('/front/css/view/event.css')}" rel='stylesheet' type='text/css' />
+        <link th:href="${#tck.getVersion('/front/select2/select2.min.css')}" rel='stylesheet' type='text/css' />
+        <link th:href="${#tck.getVersion('/front/css/view/style2.css')}" rel='stylesheet' type='text/css' />
+        <link th:href="${#tck.getVersion('/front/css/view/reset.css')}" rel='stylesheet' type='text/css' />
+        <style>
+            .tel_input1{
+                width:30%;
+                display: inline-block !important;
+                padding: 25px 15px !important;
+            }
+            .tel_input2{
+                width:33%;
+                height: 20%;
+                display: inline-block !important;
+            }
+
+            @media screen and (max-width: 480px) {
+                .tel_input1{
+                    padding: 5.16vw 3.125vw !important;
+                }
+            }
+        </style>
 	</th:block>
 	  <!--content-->
-    <div class="content main event2" layout:fragment="content">
-        <div class="container w1300">
-            <form name="frm" id="frm" method="post">
+    <div class="photo-event">
+        <div class="container">
             <div class="title">
-                <table border="5px">
-                    <tr>
-                        <td>
-                            이름 : <input type="text" id="name" name="name" data-required="이름">
-                        </td>
-                        <td rowspan="2">
-                            <div class="modal-content" style="width:200px; height:200px;" id="img01">
-                                <img id="defaultImg" style="width:200px; height:200px;" src="admin/img/placeholder.png">
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            연락처 : <input type="text" id="telNum" name="telNum" data-required="연락처" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            이메일 : <input type="text" id="email" name="email" data-required="이메일">
-                        </td>
-
-                        <td>
-                            <input type="text" id="eventImageFileName" name="eventImageFileName" class="form-control" style="width:335px;float: left;" onclick="EventJS.goFileUpload('eventImageFile'); return false;" data-required="이미지" readonly/>
-                            <div class="file_input_div">
-                                <button class="btn btn-sm btn-primary" onclick="EventJS.goFileUpload('eventImageFile'); return false;" type="button" >찾아보기</button>
-                                <input type="file" id="eventImageFile" name="eventImageFile" accept="image/*"  class="file_input_hidden" onChange="EventJS.uploadImageChange(event, this, 'eventImageFileName' )" />
-                            </div>
-                            <div style="margin-top: 40px;font-size: 13px;font-weight: bold;">이미지는 500*250 사이즈를 권장 합니다.</div>
-                        </td>
-                    </tr>
-
-                </table>
-
-
+                <img src="/front/img/title.png" alt="" />
             </div>
-            <button type="button" class="btn btn-sm btn-primary" onClick="EventJS.eventAdd(); return false;">등록</button>
+            <form name="frm" id="frm" method="post">
+                <ul>
+                    <li>
+                        <label>
+                            편의점 본사 선택 <span style="color:red;">*</span>
+                            <select name="storeName" id="storeName">
+                                <option value="">선택해주세요</option>
+                                <option value="GS">GS</option>
+                                <option value="세븐일레븐">세븐일레븐</option>
+                                <option value="CU">CU</option>
+                                <option value="미니스톱">미니스톱</option>
+                            </select>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            점포명 <span style="color:red;">*</span>
+                            <select class="js-example-placeholder-single js-states form-control" id="convenienceStoreName" name="convenienceStoreName">
+                                <option value="">선택해주세요.</option>
+                                <th:block th:each="list : ${convenienceStore}">
+                                    <option th:value="${list.convenienceStoreName}" th:text="${list.convenienceStoreName}"></option>
+                                </th:block>
+                            </select>
+                        </label>
+                    </li>
+                    <li>
+                        <label>전화번호 <span style="color:red;">*</span><br/>
+                            <select class="tel_input1" id="telNum1" name="telNum1" data-required="연락처" maxlength="3">
+                                <option value="010">010</option>
+                                <option value="010">011</option>
+                                <option value="010">016</option>
+                                <option value="010">017</option>
+                                <option value="010">018</option>
+                                <option value="010">019</option>
+                            </select>
+                            <input type="text" class="tel_input2" id="telNum2" name="telNum2" data-required="연락처" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="4">
+                            <input type="text" class="tel_input2" id="telNum3" name="telNum3" data-required="연락처" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="4">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            점주이름 <span style="color:red;">*</span>
+                            <input type="text" id="name" name="name" data-required="점주이름" maxlength="50">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            추천 직원 성함
+                            <input type="text" id="recommendedName" name="recommendedName" maxlength="50">
+                        </label>
+                    </li>
+                    <li>
+                        <label>이미지 첨부 <span style="color:red;">*</span>
+                            <div class="file-custom">
+                                <input type="file" id="fileUploadBtn" data-view="imagePreview" onchange="EventJS.check2(this);" />
+                                <label for="fileUploadBtn" id="file-label2" class="fileDrop">
+                                    <img class="file-Label" src="/front/img/ic-file.png" alt="" />
+                                    <p class="file-Label">이미지 파일을 드래그하여 업로드</p>
+                                    <p class="file-Label">1280 X 720px / 200kb 이상 이미지만 등록 가능합니다.</p>
+                                </label>
+                            </div>
+                        </label>
+                    </li>
+                    <li>
+                        <label> 작품에 관련하여 설명해주세요. <span style="color:red;">*</span> </label>
+                        <textarea id="content" name="content" data-required="작품설명" maxlength="500"></textarea>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="privacyCheck" />
+                        <label for="privacyCheck">개인정보제공 및 저작권 동의 <span style="color:red;">*</span></label>
+                    </li>
+                    <li>
+                        <button type="button" onclick="EventJS.eventAdd()">제출하기</button>
+                    </li>
+                </ul>
             </form>
+            <p>JT International Korea Inc.</p>
         </div>
     </div>
 
@@ -58,17 +128,37 @@
         <script type="text/javascript" src="/admin/js/lib/plupload/uploadUtil.js"></script>
         <script th:src="${#tck.getVersion('/front/js/common.js')}"></script>
         <script th:src="${#tck.getVersion('/front/js/view/event.js')}"></script>
+        <script th:src="${#tck.getVersion('/front/select2/select2.min.js')}"></script>
+        <script type="text/javascript" th:src="${#tck.getVersion('/front/js/tck/tckJS.js')}"></script>
+
 
         <script>
 			/*<![CDATA[*/
 			    $(document).ready(function() {
 				EventJS.init();
+
+				$(".js-example-placeholder-single").select2({
+                    placeholder: "편의점 본사를 선택해주세요.",
+                    allowClear: true
+                });
 			});
 
 			/*]]>*/
 		</script>
 	</th:block>
 </body>
+<!--<script>-->
+<!--    function setThumbnail(event, el, id) {-->
+<!--      var reader = new FileReader();-->
+<!--      reader.onload = function (event) {-->
+<!--        var img = document.createElement("img");-->
+<!--        el.nextElementSibling.style.display = "none";-->
+<!--        document.getElementById(id).innerHTML = `<img src='${event.target.result}' />`;-->
+<!--        document.getElementById(id).style.display = "block";-->
+<!--      };-->
+<!--      reader.readAsDataURL(event.target.files[0]);-->
+<!--    }-->
+<!--  </script>-->
 </html>
 
 

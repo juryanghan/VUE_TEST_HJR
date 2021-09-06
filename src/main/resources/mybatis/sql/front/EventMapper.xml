@@ -17,21 +17,36 @@
 <mapper namespace="com.jti.event.front.mapper.event.EventMapper">
     <insert id="eventAdd" parameterType="EventParam">
         INSERT INTO tb_event (
+            store_name,
+            convenienceStore_name,
             name,
             tel_num,
-            email,
+            recommended_name,
             image_path,
             image_url,
             origin_name,
-            image_size
+            image_size,
+            content
         )VALUES(
+            #{storeName},
+            #{convenienceStoreName},
             #{name},
             #{telNum},
-            #{email},
+            #{recommendedName},
             #{imagePath},
             #{imageUrl},
             #{originName},
-            #{imageSize}
+            #{imageSize},
+            #{content}
         )
     </insert>
+
+    <!-- 편의점 본사 이름 -->
+    <select id="getConvenienceStore" resultType="EventMain">
+        SELECT
+            convenienceStore_no AS convenienceStoreNo,
+            convenienceStore_name AS convenienceStoreName
+        FROM
+            tb_convenienceStore;
+    </select>
 </mapper>
