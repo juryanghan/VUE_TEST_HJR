@@ -184,41 +184,6 @@ class EventBoardController {
         return result;
     }
 
-
-//    /**
-//     *
-//     * 이미지 다운로드
-//     * */
-//    @RequestMapping(value="/download")
-//    public ModelAndView download(HttpServletRequest req, HttpServletResponse res ,EventBoardParam eventBoardParam, String fileName, String sheetName) throws ParseException {
-//        log.debug("/adm/admin/download");
-//        ModelAndView mav = new ModelAndView("excelView");
-//
-//        List<String> listColumn = new ArrayList<String>();
-//        List<List<Object>> listData = new ArrayList<List<Object>>();
-//
-//        listColumn.add("이미지");
-//
-//        if(eventBoardService.countEventBoard(eventBoardParam) != 0){
-//            List<EventBoard> list = eventBoardService.selectImg(eventBoardParam);
-//            if (null != list && list.size() != 0) {
-//                for(EventBoard item : list){
-//                List<Object> row = new ArrayList<Object>();
-//                row.add(item.getImageUrl());
-//                listData.add(row);
-//            }
-//        }
-//    }
-//
-//        mav.addObject("fileName", fileName);
-//        mav.addObject("sheetName", sheetName);
-//        mav.addObject("listData", listData);
-//        mav.addObject("listColumn", listColumn);
-//        mav.addObject("event",eventBoardService.selectImg(eventBoardParam));
-//
-//        return mav;
-//    }
-
     /**
      *
      * 엑셀 다운로드
