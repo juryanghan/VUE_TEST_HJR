@@ -114,38 +114,23 @@ var EventJS = {
 
     },
     eventAdd : function(){
-            if($("#storeName option:selected").val() == "" || $("#storeName option:selected").val() == null){
-                alert('편의점 본사가 선택되지 않았습니다.');
-                return;
-            }
-            if($("#convenienceStoreName option:selected").val() == "" || $("#storeName option:selected").val() == null){
-                alert('점포명이 선택되지 않았습니다.');
-                return;
-            }
-            // 등록할 파일 리스트
-            var uploadFileList = Object.keys(fileList);
-            // 파일이 있는지 체크
-            if(uploadFileList.length == 0 &&  $("#fileUploadBtn")[0].files.length == 0){
-                // 파일등록 경고창
-                alert("파일이 없습니다.");
-                return;
-            }
-
-            if($("input:checkbox[id=privacyCheck]").is(":checked") == false){
-                alert('개인정보제공 및 저작권을 동의 하지 않았습니다.');
-                return;
-            }
-
-            // 용량을 500MB를 넘을 경우 업로드 불가
-//            if(totalFileSize > maxUploadSize){
-//                // 파일 사이즈 초과 경고창
-//                alert("총 용량 초과\n총 업로드 가능 용량 : " + maxUploadSize + " MB");
-//                return;
-//            }
-
             if(confirm("등록 하시겠습니까?")){
                 var ValidateEl = $("#frm [data-required]");
                 TckJS.ValidateUtil.ValidateCheck(ValidateEl, function () {
+                    // 등록할 파일 리스트
+                    var uploadFileList = Object.keys(fileList);
+                    // 파일이 있는지 체크
+                    if(uploadFileList.length == 0 &&  $("#fileUploadBtn")[0].files.length == 0){
+                        // 파일등록 경고창
+                        alert("파일이 없습니다.");
+                        return;
+                    }
+
+                    if($("input:checkbox[id=privacyCheck]").is(":checked") == false){
+                        alert('개인정보제공 및 저작권을 동의 하지 않았습니다.');
+                        return;
+                    }
+
                     var frm_data = $("#frm").serializeArray();
                     var formData = new FormData();
                     for (var index in frm_data) {

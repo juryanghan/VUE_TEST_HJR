@@ -112,19 +112,24 @@
                                         <td>
                                             <select name="searchStore" id="searchStore" class="form-control" style="width: 200px;">
                                                 <option value="">선택</option>
+                                                <option value="GS">GS</option>
                                                 <option value="세븐일레븐">세븐일레븐</option>
                                                 <option value="CU">CU</option>
-                                                <option value="GS">GS</option>
+                                                <option value="미니스톱">미니스톱</option>
+                                                <option value="이마트 24">이마트 24</option>
                                             </select>
                                         </td>
                                         <th>점포명 </th>
                                         <td>
+                                            <!--
                                             <select class="js-example-placeholder-single js-states form-control" id="searchConvenienceStoreName" name="searchConvenienceStoreName">
                                                 <option value="">선택해주세요.</option>
                                                 <th:block th:each="list : ${convenienceStoreParam}">
                                                     <option th:value="${list.convenienceStoreName}" th:text="${list.convenienceStoreName}"></option>
                                                 </th:block>
                                             </select>
+                                            -->
+                                            <input type="text" id="searchConvenienceStoreName" name="searchConvenienceStoreName" class="form-control" style="width: 335px;" />
                                         </td>
                                     </tr>
                                     <tr>

@@ -12,6 +12,27 @@
 
 }
 
+.tel_input1{
+	width:30%;
+	display: inline-block !important;
+	padding: 20px 15px !important;
+}
+.tel_input2{
+	width:33%;
+	height: 20%;
+	display: inline-block !important;
+}
+
+.pop{
+	width:80%;
+}
+
+@media screen and (max-width: 480px) {
+	.tel_input1{
+		padding: 4.16vw 3.125vw !important;
+	}
+}
+
 /*
 .file_input_div
 {
