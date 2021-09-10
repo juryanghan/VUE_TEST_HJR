@@ -11,41 +11,9 @@
     <link th:href="${#tck.getVersion('/admin/css//view/admin.css')}" rel='stylesheet' type='text/css' />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
     <style>
-<!--    #img_modal{-->
-<!--            position: fixed;-->
-<!--            top: 10%;-->
-<!--            left: 40%;-->
-<!--            z-index: 1050;-->
-<!--            width: auto;-->
 
-<!--        }-->
     .pagination{
         padding-left : 50%;
-    }
-    #myform div{
-        display: inline-block;
-        direction: rtl;
-        border: 0;
-    }
-    #myform div legend{
-        text-align: left;
-    }
-    #myform input[type=checkbox]{
-        display: none;
-    }
-    #myform label{
-        font-size: 1.1em;
-        color: transparent;
-        text-shadow: 0 0 0 #f0f0f0;
-    }
-    #myform label:hover{
-        text-shadow: 0 0 0 #ffff00;
-    }
-    #myform label:hover ~ label{
-        text-shadow: 0 0 0 #ffff00;
-    }
-    #myform input[type=checkbox]:checked ~ label{
-        text-shadow: 0 0 0 #ffff00;
     }
 
     .imgC {
@@ -67,6 +35,49 @@
     }
     .table td {
        vertical-align: middle;
+    }
+
+    <!---->
+
+    .star-rating {
+      display:inline-flex;
+      flex-direction: row-reverse;
+      font-size:1.5em;
+      justify-content:space-around;
+      padding:0 .2em;
+      text-align:center;
+      width:5em;
+    }
+
+    .star-rating input {
+      display:none;
+    }
+
+    .star-rating label {
+      color:#ccc;
+      cursor:pointer;
+    }
+
+    .star-rating :checked ~ label {
+      color:#f90;
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+      color:#fc0;
+    }
+
+    /* explanation */
+
+    article {
+      background-color:#ffe;
+      box-shadow:0 0 1em 1px rgba(0,0,0,.25);
+      color:#006;
+      font-family:cursive;
+      font-style:italic;
+      margin:4em;
+      max-width:30em;
+      padding:2em;
     }
 
 </style>
@@ -208,14 +219,20 @@
                                     <img class="img-fluid px-3 px-sm-4 mt-3 mb-4 imgC" id="imgC" name="ImageList" style="width: 25rem;" th:src="${list.imageUrl}" th:alt="${list.originName}" th:data-event_no="${list.eventNo}">
                                 </td>
                                 <td th:text="${list.getContent()}"></td>
-                                <td name="myform" id="myform" th:value="${list.like}">
-                                        <div>
-                                            <input type="checkbox" th:id="|${list.eventNo},1|" name="rating" th:value="${list.like}"  th:attr="checked=${list.like  == 5 ? 'true' : 'false'}"><label th:for="|${list.eventNo},1|" th:onclick="EventBoardJS.Like([[${list.eventNo}]],5)">⭐</label>
-                                            <input type="checkbox" th:id="|${list.eventNo},2|" name="rating" th:value="${list.like}"  th:attr="checked=${list.like  == 4 ? 'true' : 'false'}"><label th:for="|${list.eventNo},2|" th:onclick="EventBoardJS.Like([[${list.eventNo}]],4)">⭐</label>
-                                            <input type="checkbox" th:id="|${list.eventNo},3|" name="rating" th:value="${list.like}"  th:attr="checked=${list.like  == 3 ? 'true' : 'false'}"><label th:for="|${list.eventNo},3|" th:onclick="EventBoardJS.Like([[${list.eventNo}]],3)">⭐</label>
-                                            <input type="checkbox" th:id="|${list.eventNo},4|" name="rating" th:value="${list.like}"  th:attr="checked=${list.like  == 2 ? 'true' : 'false'}"><label th:for="|${list.eventNo},4|" th:onclick="EventBoardJS.Like([[${list.eventNo}]],2)">⭐</label>
-                                            <input type="checkbox" th:id="|${list.eventNo},5|" name="rating" th:value="${list.like}"  th:attr="checked=${list.like  == 1 ? 'true' : 'false'}"><label th:for="|${list.eventNo},5|" th:onclick="EventBoardJS.Like([[${list.eventNo}]],1)">⭐</label>
-                                        </div>
+                                <td>
+                                    <div class="star-rating">
+                                        <input type="checkbox" id="5-stars" name="rating" value="5" th:attr="checked=${list.like  == 5 ? 'true' : 'false'}" />
+                                        <label for="5-stars" class="star" th:onclick="EventBoardJS.Like([[${list.eventNo}]],5)">&#9733;</label>
+                                        <input type="checkbox" id="4-stars" name="rating" value="4" th:attr="checked=${list.like  == 4 ? 'true' : 'false'}" />
+                                        <label for="4-stars" class="star" th:onclick="EventBoardJS.Like([[${list.eventNo}]],4)">&#9733;</label>
+                                        <input type="checkbox" id="3-stars" name="rating" value="3" th:attr="checked=${list.like  == 3 ? 'true' : 'false'}" />
+                                        <label for="3-stars" class="star" th:onclick="EventBoardJS.Like([[${list.eventNo}]],3)">&#9733;</label>
+                                        <input type="checkbox" id="2-stars" name="rating" value="2" th:attr="checked=${list.like  == 2 ? 'true' : 'false'}" />
+                                        <label for="2-stars" class="star" th:onclick="EventBoardJS.Like([[${list.eventNo}]],2)">&#9733;</label>
+                                        <input type="checkbox" id="1-star" name="rating" value="1" th:attr="checked=${list.like  == 1 ? 'true' : 'false'}" />
+                                        <label for="1-star" class="star" th:onclick="EventBoardJS.Like([[${list.eventNo}]],1)">&#9733;</label>
+                                    </div>
+
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-danger" th:if="${list.openYn == 'N'}"
