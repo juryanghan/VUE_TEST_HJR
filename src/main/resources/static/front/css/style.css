@@ -8,6 +8,18 @@
   display: block;
   clear: both;
 }
+.flex {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+.flex div {
+  flex: 0 0 auto;
+  font-size: 14px;
+}
+.flex div:first-of-type {
+  width: calc(100% - 100px);
+}
 .photo-event {
   width: 100%;
   background-image: url(/front/img/bg-visual.png);
@@ -39,6 +51,7 @@
   color: #4e4e4e;
   font-weight: bold;
   line-height: 1.3;
+  word-break: keep-all;
 }
 .photo-event .title p + p {
   margin-top: 15px;
@@ -72,6 +85,21 @@
   font-weight: bold;
   font-size: 20px;
 }
+input::-webkit-input-placeholder {
+  font-size: 14px;
+}
+input::-moz-placeholder {
+  font-size: 14px;
+}
+input:-ms-input-placeholder {
+  font-size: 14px;
+}
+input:-moz-placeholder {
+  font-size: 14px;
+}
+input::placeholder {
+  font-size: 14px;
+}
 .photo-event form ul li textarea {
   height: 200px;
   resize: none;
@@ -99,9 +127,11 @@
   display: none;
 }
 .photo-event form ul li input[type="checkbox"] + label {
-  margin-right: 10px;
   font-size: 18px;
   cursor: pointer;
+  text-indent: -40px;
+  margin-left: 40px;
+  word-break: keep-all;
 }
 .photo-event form ul li input[type="checkbox"] + label::before {
   content: "";
@@ -164,6 +194,8 @@
   float: left;
   margin-bottom: 15px;
   line-height: 1.5;
+  margin-right: 5px;
+  font-size: 21px;
 }
 .underline {
   text-decoration: underline;
@@ -175,6 +207,13 @@
   }
 }
 @media screen and (max-width: 480px) {
+  .flex div {
+    width: 20%;
+    font-size: 3.125vw;
+  }
+  .flex div:first-of-type {
+    width: 80%;
+  }
   .photo-event {
     padding-bottom: 16.6vw;
   }
@@ -184,26 +223,42 @@
   .photo-event .title {
     padding: 20.8vw 0;
   }
-.photo-event .title p {
-  margin-top: 8.33vw;
-  font-size: 5.2vw;
-}
-.photo-event .title p + p {
-  margin-top: 3.125vw;
-  font-size: 4.16vw;
-}
+  .photo-event .title p {
+    margin-top: 8.33vw;
+    font-size: 5.2vw;
+  }
+  .photo-event .title p + p {
+    margin-top: 3.125vw;
+    font-size: 4.16vw;
+  }
   .photo-event form ul li {
     margin-bottom: 8.333vw;
   }
   .photo-event form ul li label {
     font-size: 4.583vw;
   }
+
   .photo-event form ul li input,
   .photo-event form ul li select,
   .photo-event form ul li textarea {
     margin-top: 4.583vw;
     padding: 4.16vw 3.125vw;
-    font-size: 4.16vw;
+    font-size: 3.125vw;
+  }
+  input::-webkit-input-placeholder {
+    font-size: 2.5vw;
+  }
+  input::-moz-placeholder {
+    font-size: 2.5vw;
+  }
+  input:-ms-input-placeholder {
+    font-size: 2.5vw;
+  }
+  input:-moz-placeholder {
+    font-size: 2.5vw;
+  }
+  input::placeholder {
+    font-size: 2.5vw;
   }
   .photo-event form ul li select {
     background-size: 3.125vw;
@@ -211,6 +266,8 @@
   }
   .photo-event form ul li input[type="checkbox"] + label {
     font-size: 3.75vw;
+    text-indent: -8.33vw;
+    margin-left: 8.33vw;
   }
   .photo-event form ul li input[type="checkbox"] + label::before {
     width: 5.2vw;
@@ -243,7 +300,11 @@
     margin-top: 2.08vw;
   }
   .photo-event form .checkbox-list li {
+  }
+  .photo-event form .checkbox-list li {
+    font-size: 3.75vw;
     margin-bottom: 3.125vw;
+    margin-right: 1.8vw;
   }
 }
 .dimmed {
@@ -266,7 +327,7 @@
   z-index: 10000;
   width: 80%;
   max-width: 700px;
-  max-height: 60vw;
+  max-height: 70vh;
   overflow-y: scroll;
   padding: 30px;
   border-radius: 10px;

@@ -91,16 +91,28 @@
                         <textarea id="content" name="content" data-required="작품설명" maxlength="500" placeholder="공백 포함 500자 이내"></textarea>
                         <p style="text-align: right;margin-top: 10px;"><span id="content_cnt">0</span> / 500</p>
                     </li>
-                    <li class="mb15">
-                        <input type="checkbox" id="privacyCheck_01" />
-                        <label for="privacyCheck_01" class="underline"><span onclick="openPop('01')">개인정보 처리에 관한 동의서 </span> </label>
+                    <!-- 210910 수정 -->
+                    <li class="mb15 flex">
+                        <div>
+                            <input type="checkbox" id="privacyCheck_01" />
+                            <label for="privacyCheck_01">
+                                <span>개인정보 처리에 관한 동의서 </span>
+                            </label>
+                        </div>
+                        <div onclick="openPop('01')" class="underline">[내용보기]</div>
+                    </li>
+                    <li class="mb15 flex">
+                        <div>
+                            <input type="checkbox" id="privacyCheck_02" />
+                            <label for="privacyCheck_02">
+                                <span>유의사항 및 저작권 관련 사항에 대한 서약서</span>
+                            </label>
+                        </div>
+                        <div onclick="openPop('02')" class="underline">[내용보기]</div>
                     </li>
                     <li class="mb15">
                         <ul class="checkbox-list cf">
-                            <li class="underline">
-                                <input type="checkbox" id="privacyCheck_02" />
-                                <label for="privacyCheck_02"><span onclick="openPop('02')">유의사항 및 저작권 관련 사항에 대한 서약서</span> (</label>
-                            </li>
+                            <li>(</li>
                             <li>
                                 <input class="terms02" type="checkbox" id="terms02_01" />
                                 <label for="terms02_01">복제권</label>
@@ -132,6 +144,7 @@
                             <li>)</li>
                         </ul>
                     </li>
+                    <!-- //210910 수정 -->
                     <li>
                         <button type="button" onclick="EventJS.eventAdd()">제출하기</button>
                     </li>
@@ -143,6 +156,7 @@
 
     <!-- 210909 수정 -->
     <div class="dimmed dp-none"></div>
+    <!-- 210910 수정 -->
     <div class="pop pop01 dp-none">
         <h2>개인정보 처리에 관한 동의서</h2>
         <p>
@@ -160,13 +174,16 @@
             <dt>수집 &middot; 이용 목적</dt>
             <dd>참가자 인적 정보 확인 및 공모전 운영 관련 이용(공모전 운영 관련 정보전달 및 안내 포함)</dd>
             <dd>출품작 심사, 수상작 선정 및 결과 통보</dd>
-            <dd>수상자에 대한 안내 및 시상, 참가자 및 수상자에 대한 혜택의 제공</dd>
-            <dd>선정 작품 및 점포명과 점주 성명을 이용한 달력 이미지 및 글귀 제작, 배포, 홍보 및 활용</dd>
+            <dd>수상자에 대한 안내 및 시상, 참가자 및 수상자에 대한 혜택의 제공, 기프티콘 등 문자 발송</dd>
+            <dd>선정 작품 및 점포명과 점주 성명, 사진 설명을 이용한 달력 이미지 및 글귀 제작, 배포, 홍보 및 활용</dd>
         </dl>
         <h5>▣ 보유 및 이용 기간</h5>
-        <p class="bold">JTI는 관계 법령에 따라 정보주체의 개인정보를 보존할 의무가 있는 경우가 아닌 한, 정보주체의 공모전 참여일로부터 5년간 개인정보를 처리합니다.</p>
+        <p class="bold">
+            JTI는 관계 법령에 따라 정보주체의 개인정보를 보존할 의무가 있는 경우가 아닌 한, 정보주체의 공모전 종료일로부터 미수상 참가자의 개인정보는 3개월, 수상 참가자의 개인정보는 5년간 개인정보를
+            처리합니다.
+        </p>
         <h5>▣ 동의를 거부할 권리 및 동의를 거부할 경우의 불이익</h5>
-        <p>정보주체는 위와 같은 개인정보 수집·이용을 거부할 수 있습니다. 다만, 필수적 정보의 수집·이용에 동의하지 않을 경우 공모전 참여가 불가능할 수 있습니다.</p>
+        <p>정보주체는 위와 같은 개인정보 수집·이용을 거부할 수 있습니다. 다만, 필수적 정보의 수집·이용에 동의하지 않을 경우 공모전 참여가 불가능합니다.</p>
         <h5>▣ 위 개인정보의 수집/이용에 대하여 동의할 경우 JTI는 아래 수탁회사를 통하여 업무를 처리합니다.</h5>
         <ul class="tbl-list">
             <li>
@@ -197,46 +214,15 @@
                 </p>
                 <p>선정 작품을 이용한 달력 이미지 제작 및 활용</p>
             </li>
-        </ul>
-        <div>
-            <input type="checkbox" id="terms01_01" />
-            <label for="terms01_01"> JTI의 일반 개인정보 수집 및 이용에 관한 설명을 이해하고, 이에 동의합니다. </label>
-        </div>
-        <h3>2. [선택] 개인정보의 마케팅 목적 수집·이용에 대한 동의</h3>
-        <h5>▣ 선택적 수집 &middot; 이용</h5>
-        <dl>
-            <dt>수집 &middot; 이용 항목</dt>
-            <dd>상기 항목과 같음</dd>
-        </dl>
-        <dl>
-            <dt>수집 &middot; 이용 목적</dt>
-            <dd>기프티콘 등 문자 발송</dd>
-        </dl>
-        <h5>▣ 보유 및 이용 기간</h5>
-        <p class="bold">상기 기간과 같음</p>
-        <h5>▣ 동의를 거부할 권리 및 동의를 거부할 경우의 불이익</h5>
-        <p>
-            정보주체는 위와 같은 선택적 개인정보의 수집·이용 및 기프티콘 등 문자 수신에 대한 동의를 거부할 수 있습니다. 다만, 선택적 개인정보의 수집·이용에 동의하지 않을 경우 JTI가 제공하는 기프티콘 문자
-            등에 대한 안내 등을 수신하실 수 없습니다.
-        </p>
-        <ul class="tbl-list">
-            <li>
-                <p>수탁기관명</p>
-                <p>업무내용</p>
-            </li>
             <li>
                 <p>
-                    리레코코리아(주)
+                    리레코코리아(주) (
                     <br />
-                    (02-3480-8800)
+                    02-3480-8800)
                 </p>
-                <p>기프티콘 및 안내문자 등 문자 발송 대행</p>
+                <p>기프티콘 및 관련 안내문자 등 문자 발송 대행</p>
             </li>
         </ul>
-        <div>
-            <input type="checkbox" id="terms01_02" />
-            <label for="terms01_02"> JTI의 마케팅 목적 일반 개인정보 수집 및 이용에 관한 설명을 이해하고, 이에 동의합니다. </label>
-        </div>
         <p>
             <strong
             >본인은 개인정보 수집 및 이용 등 상기 개인정보 처리에 관한 설명을 상세히 읽어보았고, 이에 관하여 충분히 이해하였으며, 착오·사기·강박에 의하지 아니한 본인의 자유로운 의사에 의해 명확히
@@ -250,6 +236,7 @@
             <span> 닫기 </span>
         </button>
     </div>
+    <!-- //210910 수정 -->
     <div class="pop pop02 dp-none">
         <h2>유의사항 및 저작권 관련 사항에 대한 서약서</h2>
         <p>
