@@ -184,6 +184,14 @@
   .photo-event .title {
     padding: 20.8vw 0;
   }
+.photo-event .title p {
+  margin-top: 8.33vw;
+  font-size: 5.2vw;
+}
+.photo-event .title p + p {
+  margin-top: 3.125vw;
+  font-size: 4.16vw;
+}
   .photo-event form ul li {
     margin-bottom: 8.333vw;
   }
