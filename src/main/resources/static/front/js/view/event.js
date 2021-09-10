@@ -126,10 +126,17 @@ var EventJS = {
                         return;
                     }
 
-                    if($("input:checkbox[id=privacyCheck]").is(":checked") == false){
-                        alert('개인정보제공 및 저작권을 동의 하지 않았습니다.');
+                    if($("input:checkbox[id=privacyCheck_01]").is(":checked") == false){
+                        alert('개인정보 처리에 관한 동의를 해주세요.');
                         return;
                     }
+
+                    if($("input:checkbox[id=privacyCheck_02]").is(":checked") == false){
+                        alert('유의사항 및 저작권 관련 사항에 대한 서약서에 대한 동의를 해주세요.');
+                        return;
+                    }
+
+
 
                     var frm_data = $("#frm").serializeArray();
                     var formData = new FormData();

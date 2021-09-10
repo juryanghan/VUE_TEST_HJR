@@ -93,13 +93,13 @@
                     </li>
                     <li class="mb15">
                         <input type="checkbox" id="privacyCheck_01" />
-                        <label for="privacyCheck_01" onclick="openPop('01')" class="underline">개인정보 처리에 관한 동의서</label>
+                        <label for="privacyCheck_01" class="underline"><span onclick="openPop('01')">개인정보 처리에 관한 동의서 </span> </label>
                     </li>
                     <li class="mb15">
                         <ul class="checkbox-list cf">
                             <li class="underline">
                                 <input type="checkbox" id="privacyCheck_02" />
-                                <label for="privacyCheck_02" onclick="openPop('02')"> 유의사항 및 저작권 관련 사항에 대한 서약서 (</label>
+                                <label for="privacyCheck_02"><span onclick="openPop('02')">유의사항 및 저작권 관련 사항에 대한 서약서</span> (</label>
                             </li>
                             <li>
                                 <input class="terms02" type="checkbox" id="terms02_01" />
@@ -321,6 +321,23 @@
                        this.value = this.value.substring(0,500);
                    }
                })
+
+
+               $("#privacyCheck_02").click(function () {
+                   $(".terms02").prop("checked",this.checked);
+               })
+
+               $(".terms02").click(function () {
+                   if($(".terms02").length == $(".terms02:checked").length){
+                       $("#privacyCheck_02").prop("checked",true);
+                   }else {
+                       $("#privacyCheck_02").prop("checked",false);
+                   }
+               })
+
+                    $(".dimmed").click(function (){
+                        closePop();
+                    })
 			});
 
             function openPop(pop) {
