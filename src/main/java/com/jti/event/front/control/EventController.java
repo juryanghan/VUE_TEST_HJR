@@ -43,10 +43,12 @@ public class EventController {
         log.debug("frt/event/ajax/add");
         String fullTelNum = "";
         BaseResult result = new BaseResult();
-        result.setResultCode("0000");
-        result.setResultMsg("정상");
+        result.setResultCode("9999");
+        result.setResultMsg("이벤트가 종료되었습니다.");
+        return  result;
 
 
+/*
         MultipartHttpServletRequest part = (MultipartHttpServletRequest) req;
         MultipartFile mf = part.getFile("eventImageFile");
         if(null == mf || mf.getSize() == 0){
@@ -136,6 +138,7 @@ public class EventController {
                 return  result;
             }
         return result;
+        */
     }
 
 }

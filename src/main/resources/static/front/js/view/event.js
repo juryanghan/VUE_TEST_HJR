@@ -114,6 +114,9 @@ var EventJS = {
 
     },
     eventAdd : function(){
+        alert("이벤트가 종료되었습니다.\n참여해주셔서 감사합니다.");
+        return ;
+        /*
             if(confirm("등록 하시겠습니까?")){
                 var ValidateEl = $("#frm [data-required]");
                 TckJS.ValidateUtil.ValidateCheck(ValidateEl, function () {
@@ -159,6 +162,7 @@ var EventJS = {
                     });
                 });
             }
+            */
     }
 }
 /*]]>*/
