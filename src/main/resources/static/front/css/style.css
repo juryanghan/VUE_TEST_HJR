@@ -336,7 +336,6 @@ input::placeholder {
   max-height: 70vh;
   overflow-y: scroll;
   padding: 30px;
-  border-radius: 10px;
   background: #fff;
 }
 .pop {
@@ -552,7 +551,7 @@ input::placeholder {
   display: inline-block;
   background: #00b2a9;
   color: #fff;
-  width: 300px;
+  width: 310px;
   font-size: 28px;
   border-radius: 30px;
   padding: 10px 60px;
@@ -565,7 +564,7 @@ input::placeholder {
   top: 50%;
   left: 0;
   transform: translateY(-50%);
-  width: calc(50% - 180px);
+  width: calc(50% - 185px);
   height: 4px;
   background: linear-gradient(to left, #00b2a9, #c4efed, #75eaec);
 }
@@ -576,13 +575,14 @@ input::placeholder {
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  width: calc(50% - 180px);
+  width: calc(50% - 185px);
   height: 4px;
   background: linear-gradient(to right, #00b2a9, #c4efed, #75eaec);
 }
 .photo-event.result .result-title p span {
   font-size: 16px;
 }
+
 .photo-event.result .second-place .result-title p {
   background: #407ec9;
   color: #fff;
@@ -630,19 +630,28 @@ input::placeholder {
   background-repeat: no-repeat;
   background-size: cover;
 }
+.photo-event.result .result-list .first-place li:first-of-type .img-area {
+  background-position: center right;
+}
 .photo-event.result .result-list li .cf {
   padding: 15px;
 }
 .photo-event.result .result-list li .cf p {
   font-size: 20px;
   font-weight: 500;
+  line-height: 1.25;
 }
+
 .photo-event.result .result-list li .cf p strong {
   font-size: 22px;
 }
 .photo-event.result .title.footer {
   padding: 50px 0;
   font-size: 22px;
+}
+.photo-event.result .title.footer img {
+  max-width: 200px;
+  margin: 30px 0;
 }
 @media screen and (max-width: 900px) {
   .photo-event.result .result-list ul {
@@ -675,29 +684,31 @@ input::placeholder {
     font-size: 5.83vw;
     padding: 2.08vw 10.4vw;
   }
-
   .photo-event.result .result-title p span {
     font-size: 13px;
   }
   .photo-event.result .result-list li {
     margin-bottom: 4.16vw;
   }
-
   .photo-event.result .result-list li .img-area {
-    height: 300px;
+    height: 200px;
     padding: 2.08vw;
   }
   .photo-event.result .result-list li .cf {
-    padding: 3.125vw;
+    padding: 0 3.125vw;
   }
   .photo-event.result .result-list li .cf p {
     font-size: 4.16vw;
   }
   .photo-event.result .result-list li .cf p strong {
-    font-size: 16px;
+    font-size: 4.16vw;
   }
   .photo-event.result .title.footer {
     padding: 8.33vw 0;
     font-size: 15px;
+  }
+  .photo-event.result .title.footer img {
+    max-width: 50%;
+    margin: 6.25vw 0;
   }
 }

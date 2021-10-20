@@ -33,17 +33,21 @@ public class MainController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		log.debug("/frt");
+		log.debug("/");
 		ModelAndView mav = new ModelAndView("front/view/main/index");
+		mav.setViewName("redirect:/winner");
+
+		/*
 		List<EventMain> em = new ArrayList<EventMain>();
 		em = eventService.getConvenienceStore();
 		mav.addObject("convenienceStore", em);
+		 */
 		return mav;
 	}
 
 	@RequestMapping(value = "/winner", method = RequestMethod.GET)
 	public ModelAndView winner(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		log.debug("/frt/winner");
+		log.debug("/winner");
 		ModelAndView mav = new ModelAndView("front/view/main/winner");
 		return mav;
 	}
