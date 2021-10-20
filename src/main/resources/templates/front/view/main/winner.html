@@ -13,18 +13,23 @@
         <link th:href="${#tck.getVersion('/front/css/reset.css')}" rel='stylesheet' type='text/css' />
         <link th:href="${#tck.getVersion('/front/css/style.css')}" rel='stylesheet' type='text/css' />
         <style>
-            #popImg{
+            #popImg {
                 width: 100%;
                 height: 100%;
-                margin-top: 25px;
             }
-
-            .pop{
-                max-width: 810px;
+            .result.pop {
+                width: 95%;
+                max-width: 1000px;
+                max-height: 90vh;
+                padding: 5px;
+                overflow-y: auto;
+                border-radius: 0;
             }
-
-            .pop button.box span{
-                margin: 0px;
+            .pop button.box {
+                width: 100%;
+            }
+            .result.pop button.box span {
+                margin-top: 5px;
             }
         </style>
 	</th:block>
@@ -472,15 +477,13 @@
     <!-- 210909 수정 -->
     <div class="dimmed dp-none"></div>
     <!-- 210910 수정 -->
-    <div class="pop pop01 dp-none">
-        <img id="popImg" />
-        <button type="button" onclick="closePop()">
-            <img src="/front/img/ic_clese.png" alt="닫기" />
-        </button>
+    <div class="result pop pop01 dp-none">
+        <img id="popImg" src="/front/img/winner/image_24.jpg" />
         <button type="button" onclick="closePop()" class="box cf">
             <span> 닫기 </span>
         </button>
     </div>
+
 
     <!-- //211019 -->
     <!--// content-->
