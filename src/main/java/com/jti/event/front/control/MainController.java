@@ -41,15 +41,11 @@ public class MainController {
 		return mav;
 	}
 
-//	@RequestMapping(value = "/ajax/add")
-//	public BaseResult add(HttpServletRequest req, HttpServletResponse res, EventParam eventParam){
-//		log.debug("/add");
-//		BaseResult result = new BaseResult();
-//		result.setResultCode("0000");
-//		result.setResultMsg("정상");
-//
-//		eventService.eventAdd(eventParam);
-//
-//		return result;
-//	}
+	@RequestMapping(value = "/winner", method = RequestMethod.GET)
+	public ModelAndView winner(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		log.debug("/frt/winner");
+		ModelAndView mav = new ModelAndView("front/view/main/winner");
+		return mav;
+	}
+
 }

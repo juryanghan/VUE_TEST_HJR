@@ -8,6 +8,12 @@
   display: block;
   clear: both;
 }
+.fl-l {
+  float: left;
+}
+.fl-r {
+  float: right;
+}
 .flex {
   display: flex;
   flex-flow: row nowrap;
@@ -38,7 +44,7 @@
   margin-bottom: 15px !important;
 }
 .photo-event .title {
-  padding: 100px 0 156px;
+  padding: 100px 0 70px;
   text-align: center;
 }
 .photo-event .title img {
@@ -533,5 +539,165 @@ input::placeholder {
   .pop .terms-list li {
     font-size: 2.7vw;
     margin-bottom: 1.11vw;
+  }
+}
+
+/* result */
+.photo-event.result .result-title {
+  position: relative;
+  text-align: center;
+  margin-bottom: 55px;
+}
+.photo-event.result .result-title p {
+  display: inline-block;
+  background: #00b2a9;
+  color: #fff;
+  width: 300px;
+  font-size: 28px;
+  border-radius: 30px;
+  padding: 10px 60px;
+}
+
+.photo-event.result .result-title::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: calc(50% - 180px);
+  height: 4px;
+  background: linear-gradient(to left, #00b2a9, #c4efed, #75eaec);
+}
+.photo-event.result .result-title::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: calc(50% - 180px);
+  height: 4px;
+  background: linear-gradient(to right, #00b2a9, #c4efed, #75eaec);
+}
+.photo-event.result .result-title p span {
+  font-size: 16px;
+}
+.photo-event.result .second-place .result-title p {
+  background: #407ec9;
+  color: #fff;
+}
+.photo-event.result .second-place .result-title::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: calc(50% - 180px);
+  height: 4px;
+  background: linear-gradient(to left, #407ec9, #c1dbf9);
+}
+.photo-event.result .second-place .result-title::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: calc(50% - 180px);
+  height: 4px;
+  background: linear-gradient(to right, #407ec9, #c1dbf9);
+}
+
+.photo-event.result .result-list ul {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+.photo-event.result .result-list li {
+  width: 48%;
+  margin-bottom: 20px;
+}
+.photo-event.result .result-list li .img-area {
+  width: 100%;
+  height: 300px;
+  padding: 10px;
+  border: 2px solid #d3d3d3;
+  border-radius: 15px;
+  background: #fff;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.photo-event.result .result-list li .cf {
+  padding: 15px;
+}
+.photo-event.result .result-list li .cf p {
+  font-size: 20px;
+  font-weight: 500;
+}
+.photo-event.result .result-list li .cf p strong {
+  font-size: 22px;
+}
+.photo-event.result .title.footer {
+  padding: 50px 0;
+  font-size: 22px;
+}
+@media screen and (max-width: 900px) {
+  .photo-event.result .result-list ul {
+    justify-content: center;
+  }
+  .photo-event.result .result-list li {
+    width: 70%;
+  }
+}
+@media screen and (max-width: 640px) {
+  .photo-event.result .result-list li {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 500px) {
+  .photo-event.result .result-title::before,
+  .photo-event.result .result-title::after,
+  .photo-event.result .second-place .result-title::before,
+  .photo-event.result .second-place .result-title::after {
+    display: none;
+  }
+}
+@media screen and (max-width: 480px) {
+  .photo-event.result .result-title {
+    margin-bottom: 10.4vw;
+  }
+  .photo-event.result .result-title p {
+    width: 90%;
+    margin: 0 auto;
+    font-size: 5.83vw;
+    padding: 2.08vw 10.4vw;
+  }
+
+  .photo-event.result .result-title p span {
+    font-size: 13px;
+  }
+  .photo-event.result .result-list li {
+    margin-bottom: 4.16vw;
+  }
+
+  .photo-event.result .result-list li .img-area {
+    height: 300px;
+    padding: 2.08vw;
+  }
+  .photo-event.result .result-list li .cf {
+    padding: 3.125vw;
+  }
+  .photo-event.result .result-list li .cf p {
+    font-size: 4.16vw;
+  }
+  .photo-event.result .result-list li .cf p strong {
+    font-size: 16px;
+  }
+  .photo-event.result .title.footer {
+    padding: 8.33vw 0;
+    font-size: 15px;
   }
 }
